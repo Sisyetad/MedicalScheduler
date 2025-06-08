@@ -16,23 +16,23 @@ class BranchModel extends Branch {
     super.contactPhone,
     super.headOffice,
     super.location,
-  }) : super(role: RoleModel(roleId: 2, name: 'Branch'));
+  }) : super(role: RoleModel(roleId: 4, name: 'Doctor'));
 
   factory BranchModel.fromJson(Map<String, dynamic> json) {
     return BranchModel(
-      branchId: json['branch_id']?? json['user_id'],
-      username: json['username'],
+      branchId: json['branch_id'] ?? json['user_id'],
+      username: json['username'] ?? json['name'],
       email: json['email'],
-      password: json['password'] ?? "", 
+      password: json['password'] ?? "",
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       specialization: json['specialization'] ?? "",
-      contactPhone: json['contact_phone']?? "",
+      contactPhone: json['contact_phone'] ?? "",
       location: json['location'] ?? "",
-      isSignedUp: json['is_signed_up']?? false,
-      headOffice: json['headoffice'] != null 
-      ? HeadofficeModel.fromJson(json['headoffice']) as HeadOffice
-      : null,
+      isSignedUp: json['is_signed_up'] ?? false,
+      headOffice: json['headoffice'] != null
+          ? HeadofficeModel.fromJson(json['headoffice']) as HeadOffice
+          : null,
     );
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
 import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
-import 'package:medical_scheduler/domain/usecases/doctor/createDiagnosis.dart';
+import 'package:medical_scheduler/Application/Usecases/doctor/createDiagnosis.dart';
 import 'package:medical_scheduler/presentation/Provider/states/diagnosis_form_state.dart';
 import 'package:medical_scheduler/presentation/events/diagnosis_form_events.dart';
 
@@ -10,7 +10,7 @@ class DiagnosisFormNotifier extends StateNotifier<DiagnosisFormState> {
   final CreateDiagnosis createDiagnosisUseCase;
 
   DiagnosisFormNotifier(this.createDiagnosisUseCase)
-      : super(DiagnosisFormState());
+    : super(DiagnosisFormState());
 
   Future<void> mapEventToState(DiagnosisFormEvents event) async {
     if (event is UpdateDiagnosis) {
@@ -27,7 +27,7 @@ class DiagnosisFormNotifier extends StateNotifier<DiagnosisFormState> {
       medication: diagnosis.medication,
       doctorId: diagnosis.doctor.userId,
       patientId: diagnosis.patient.userId,
-      visible: true
+      visible: true,
     );
 
     state = state.copywith(diagnosis: newRequest);
@@ -36,10 +36,12 @@ class DiagnosisFormNotifier extends StateNotifier<DiagnosisFormState> {
   Future<void> _submitForm() async {
     try {
       state = state.copywith(isLoading: true, error: null);
-      await createDiagnosisUseCase(CreateDiagnosisParams(diagnosisRequest: state.diagnosis));
+      await createDiagnosisUseCase(
+        CreateDiagnosisParams(diagnosisRequest: state.diagnosis),
+      );
       state = state.copywith(isLoading: false, isSuccess: true);
     } catch (e) {
-      state = state.copywith(isLoading: false, error: e.toString(), isSuccess: false);
+      state = state.copywith(isLoading: false, error: e.toString());
     }
   }
 }

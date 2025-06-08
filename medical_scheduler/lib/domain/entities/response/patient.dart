@@ -12,9 +12,9 @@ class Patient extends User {
 
   Patient({
     required this.patientId,
-    super.username,
+    required super.username,
     required super.email,
-    required super.password,
+    super.password,
     required super.role,
     required super.createdAt,
     required super.updatedAt,
@@ -25,7 +25,7 @@ class Patient extends User {
     required this.gender,
     required this.dateOfBirth,
     this.registeredBy,
-  }):super(userId: patientId);
+  }) : super(userId: patientId);
 
   @override
   Patient copyWith({
@@ -58,5 +58,4 @@ class Patient extends User {
       registeredBy: registeredBy ?? this.registeredBy,
     );
   }
-
 }

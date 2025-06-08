@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/domain/usecases/doctor/displayDiagnoses.dart';
-import 'package:medical_scheduler/domain/usecases/patient/getpatient.dart';
+import 'package:medical_scheduler/Application/Usecases/doctor/displayDiagnoses.dart';
+import 'package:medical_scheduler/Application/Usecases/patient/getpatient.dart';
 import 'package:medical_scheduler/presentation/Provider/states/patient_history_state.dart';
 import 'package:medical_scheduler/presentation/events/patient_history_events.dart';
-
 
 class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
   final GetAllDiagnoses getAllDiagnoses;
@@ -12,12 +11,7 @@ class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
   PatientHistoryNotifier({
     required this.getAllDiagnoses,
     required this.getPatientById,
-  }) : super(
-          PatienthistoryUiState(
-            patient: null,
-            isLoading: true 
-          ),
-        );
+  }) : super(PatienthistoryUiState(patient: null));
 
   Future<void> handleEvent(PatientHistoryEvent event) async {
     if (event is FetchPatientHistory) {
@@ -31,7 +25,7 @@ class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
 
   Future<void> _fetchPatientHistory(int patientId) async {
     try {
-      state = state.copywith(isLoading: true, error: null, isSuccess: false);
+      state = state.copywith(isLoading: true, error: null);
 
       final patient = await getPatientById(patientId);
       final allDiagnoses = await getAllDiagnoses();
@@ -48,11 +42,7 @@ class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
         isSuccess: true,
       );
     } catch (e) {
-      state = state.copywith(
-        isLoading: false,
-        isSuccess: false,
-        error: e.toString(),
-      );
+      state = state.copywith(isLoading: false, error: e.toString());
     }
   }
 }

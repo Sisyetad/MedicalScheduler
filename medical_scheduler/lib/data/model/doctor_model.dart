@@ -17,18 +17,18 @@ class DoctorModel extends Doctor {
   }) : super(role: RoleModel(roleId: 4, name: 'Doctor'));
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
-    
     return DoctorModel(
-      doctorId: json['doctor_id']?? json['user_id'],
+      doctorId: json['doctor_id'] ?? json['user_id'],
       username: json['username'],
       email: json['email'],
       password: json['password'] ?? "",
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      branch: json['branch'] != null ? 
-        BranchModel.fromJson(json['branch']) as Branch : null,
-      isSignedUp: json['is_signed_up']?? true,
-      specialization: json['specialty']?? '',
+      branch: json['branch'] != null
+          ? BranchModel.fromJson(json['branch']) as Branch
+          : null,
+      isSignedUp: json['is_signed_up'] ?? true,
+      specialization: json['specialty'] ?? '',
     );
   }
 
@@ -42,7 +42,7 @@ class DoctorModel extends Doctor {
       'role': (role as RoleModel).toJson(),
       'created_at': createdAt,
       'updated_at': updatedAt,
-      'branch': branch != null ? (branch as BranchModel).toJson(): null,
+      'branch': branch != null ? (branch as BranchModel).toJson() : null,
       'is_signed_up': isSignedUp,
       'specialty': specialization,
     };

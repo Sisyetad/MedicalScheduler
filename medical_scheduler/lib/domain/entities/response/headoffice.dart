@@ -8,7 +8,7 @@ class HeadOffice extends User {
 
   HeadOffice({
     required this.headofficeId,
-    required String name,
+    required super.username,
     required this.location,
     required String contactEmail,
     required this.contactPhone,
@@ -16,11 +16,7 @@ class HeadOffice extends User {
     super.password,
     required super.createdAt,
     required super.updatedAt,
-  }) : super(
-          userId: headofficeId, 
-          username: name,
-          email: contactEmail,
-        );
+  }) : super(userId: headofficeId, email: contactEmail);
 
   @override
   HeadOffice copyWith({
@@ -28,11 +24,11 @@ class HeadOffice extends User {
     String? email,
     String? password,
     String? updatedAt,
-    List<BranchModel>? branches, 
+    List<BranchModel>? branches,
   }) {
     return HeadOffice(
       headofficeId: headofficeId,
-      name: username ?? this.username,
+      username: username ?? this.username,
       location: location,
       contactEmail: email ?? this.email,
       contactPhone: contactPhone,
@@ -50,5 +46,4 @@ class HeadOffice extends User {
   void updateContactPhone(String newPhone) {
     contactPhone = newPhone;
   }
-
 }

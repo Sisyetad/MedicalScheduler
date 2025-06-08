@@ -7,3 +7,8 @@ class UpdateQueueStatus extends DoctorQueueEvent {
   final int status;
   UpdateQueueStatus(this.queueId, this.status);
 }
+
+class FilterQueues extends DoctorQueueEvent {
+  final String query;
+  FilterQueues(this.query);
+}

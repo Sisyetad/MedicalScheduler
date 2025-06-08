@@ -6,8 +6,8 @@ import 'package:medical_scheduler/data/repository/diagnosis_repo_impl.dart';
 import 'package:medical_scheduler/data/source/data_source/diagnosis_data_src.dart';
 import 'package:medical_scheduler/data/source/data_source_implementation/diagnosis_data_src_imp.dart';
 import 'package:medical_scheduler/domain/repository/diagnosis_repo.dart';
-import 'package:medical_scheduler/domain/usecases/doctor/displayDiagnoses.dart';
-import 'package:medical_scheduler/domain/usecases/doctor/getDiagnosis.dart';
+import 'package:medical_scheduler/Application/Usecases/doctor/displayDiagnoses.dart';
+import 'package:medical_scheduler/Application/Usecases/doctor/getDiagnosis.dart';
 import 'package:medical_scheduler/presentation/Provider/notifiers/diagnosis_detail_viewmodel.dart';
 import 'package:medical_scheduler/presentation/Provider/states/diagnosis_detail_state.dart';
 
@@ -38,15 +38,15 @@ final displayDiagnoses = Provider<GetAllDiagnoses>((ref) {
   return GetAllDiagnoses(repo);
 });
 
-
 final displayDiagnosis = Provider<GetDiagnosisById>((ref) {
   final repo = ref.watch(diagnosisRepositoryProvider);
   return GetDiagnosisById(repo);
 });
 
-
 final diagnosisDetailNotifierProvider =
-    StateNotifierProvider<DiagnosisDetailNotifier, DiagnosisDetailUiState>((ref) {
-  final getDiagnosis = ref.watch(displayDiagnosis);
-  return DiagnosisDetailNotifier(getDiagnosisById: getDiagnosis);
-});
+    StateNotifierProvider<DiagnosisDetailNotifier, DiagnosisDetailUiState>((
+      ref,
+    ) {
+      final getDiagnosis = ref.watch(displayDiagnosis);
+      return DiagnosisDetailNotifier(getDiagnosisById: getDiagnosis);
+    });

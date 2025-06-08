@@ -1,4 +1,3 @@
-
 import 'package:medical_scheduler/data/model/role_model.dart';
 import 'package:medical_scheduler/domain/entities/response/user.dart';
 
@@ -7,20 +6,20 @@ class UserModel extends User {
     required super.userId,
     required super.username,
     required super.email,
-    required super.password,
+    super.password,
     required super.role,
     required super.createdAt,
     required super.updatedAt,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-     return UserModel(
+    return UserModel(
       userId: json['user_id'],
-      username: json['name'],
+      username: json['username'],
       email: json['email'],
       password: json['password'] ?? "",
       createdAt: json['created_at'],
-      updatedAt: json['updated_at'], 
+      updatedAt: json['updated_at'],
       role: RoleModel.fromJson(json['role']),
     );
   }

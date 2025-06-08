@@ -21,8 +21,16 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(doctorQueueNotifierProvider.notifier).mapEventToState(FetchQueues());
+      ref
+          .read(doctorQueueNotifierProvider.notifier)
+          .mapEventToState(FetchQueues());
     });
+  }
+
+  void _filterQueues(String query) {
+    ref
+        .read(doctorQueueNotifierProvider.notifier)
+        .mapEventToState(FilterQueues(query));
   }
 
   @override
@@ -35,50 +43,58 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
           actions: const [PopupMenu()],
         ),
         body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Doctor Queue",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  Consumer(
-                    builder: (context, ref, child) => Completed(
-                      completedCount: ref.watch(doctorQueueNotifierProvider).completed,
-                    ),),
-                  const SizedBox(height: 20),
-                  Consumer(
-                    builder: (context, ref, child) => Pending(
-                      pendingCount: ref.watch(doctorQueueNotifierProvider).pending,
-                    ),),
-                  const SizedBox(height: 20),
-                  Consumer(
-                    builder: (context, ref, child) => Resolved(
-                      resolvedCount: ref.watch(doctorQueueNotifierProvider).resolvedPending,
-                    ),),
-                  const SizedBox(height: 20),
-                  const SearchBar(hintText: "Search for Users..."),
-                  const SizedBox(height: 20),
-
-                  // DoctorQueueWidget uses the queues list from state
-                  Consumer(
-                    builder: (context, ref, _) {
-                      final state = ref.watch(doctorQueueNotifierProvider);
-                      return DoctorQueueWidget(
-                        queues: state.queues,
-                      );
-                    },
-                  ),
-                ],
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Doctor Queue",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
               ),
-            )));
+              const SizedBox(height: 20),
+
+              Consumer(
+                builder: (context, ref, child) => Completed(
+                  completedCount: ref
+                      .watch(doctorQueueNotifierProvider)
+                      .completed,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Consumer(
+                builder: (context, ref, child) => Pending(
+                  pendingCount: ref.watch(doctorQueueNotifierProvider).pending,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Consumer(
+                builder: (context, ref, child) => Resolved(
+                  resolvedCount: ref
+                      .watch(doctorQueueNotifierProvider)
+                      .resolvedPending,
+                ),
+              ),
+              const SizedBox(height: 20),
+              SearchBar(
+                hintText: "Search for Users...",
+                onChanged: _filterQueues,
+              ),
+              const SizedBox(height: 20),
+
+              // DoctorQueueWidget uses the queues list from state
+              Consumer(
+                builder: (context, ref, _) {
+                  final state = ref.watch(doctorQueueNotifierProvider);
+
+                  return DoctorQueueWidget(queues: state.queues);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

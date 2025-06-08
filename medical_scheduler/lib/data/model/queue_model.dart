@@ -19,7 +19,9 @@ class DataQueueModel extends DataQueue {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       patient: PatientModel.fromJson(json['patient']),
-      doctor: json['doctor'] != null ? DoctorModel.fromJson(json['doctor']) : null,
+      doctor: json['doctor'] != null
+          ? DoctorModel.fromJson(json['doctor'])
+          : null,
     );
   }
 
@@ -33,6 +35,4 @@ class DataQueueModel extends DataQueue {
       'doctor': doctor != null ? (doctor as DoctorModel).toJson() : null,
     };
   }
-
-  
 }

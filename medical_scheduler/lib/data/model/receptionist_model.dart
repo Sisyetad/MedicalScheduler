@@ -1,4 +1,3 @@
-
 import 'package:medical_scheduler/data/model/branch_model.dart';
 import 'package:medical_scheduler/data/model/role_model.dart';
 import 'package:medical_scheduler/domain/entities/response/Branch.dart';
@@ -18,29 +17,29 @@ class ReceptionistModel extends Receptionist {
 
   factory ReceptionistModel.fromJson(Map<String, dynamic> json) {
     return ReceptionistModel(
-      receptionistId: json['receptionist_id'], 
-      username: json['name'], 
+      receptionistId: json['receptionist_id'] ?? json['user_id'],
+      username: json['username'],
       email: json['email'],
       password: json['password'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       branch: BranchModel.fromJson(json['branch']) as Branch,
-      isSignedUp: json['is_signed_up'], 
+      isSignedUp: json['is_signed_up'],
     );
   }
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      'receptionist_id': receptionistId, 
-      'name': username,  
+      'receptionist_id': receptionistId,
+      'name': username,
       'email': email,
-      'password': passwordHash, 
+      'password': passwordHash,
       'role': (role as RoleModel).toJson(),
       'created_at': createdAt,
       'updated_at': updatedAt,
       'branch': (branch as BranchModel).toJson(),
-      'is_signed_up': isSignedUp, 
+      'is_signed_up': isSignedUp,
     };
   }
 }

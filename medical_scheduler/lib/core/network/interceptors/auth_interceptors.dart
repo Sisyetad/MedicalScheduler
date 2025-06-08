@@ -5,7 +5,9 @@ import 'package:logger/logger.dart';
 import 'package:medical_scheduler/core/util/session_manager.dart';
 
 class LoggerInterceptor extends Interceptor {
-  Logger logger = Logger(printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true));
+  Logger logger = Logger(
+    printer: PrettyPrinter(methodCount: 0, colors: true, printEmojis: true),
+  );
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
@@ -30,15 +32,17 @@ class LoggerInterceptor extends Interceptor {
   }
 }
 
-
 class AuthInterceptor extends Interceptor {
   final SecureSessionManager sessionManager;
 
   AuthInterceptor(this.sessionManager);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await sessionManager.fetchAuthToken(); // Assuming this method exists
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final token = await sessionManager.fetchAuthToken();
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }

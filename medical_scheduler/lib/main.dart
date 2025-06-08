@@ -14,7 +14,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Medical Scheduler',
       debugShowCheckedModeBanner: false,
-      theme: appTheme, 
+      theme: appTheme,
       routerConfig: router,
     );
   }
@@ -30,12 +30,11 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
   colorScheme: const ColorScheme.light(
-    primary: Color(0xFF1A73E8),         
-    secondary:  Color.fromARGB(255, 162, 182, 202),          
-    surface: Colors.white,          
-    onPrimary: Colors.white,         
+    primary: Color(0xFF1A73E8),
+    secondary: Color.fromARGB(255, 162, 182, 202),
+    surface: Colors.white,
+    onPrimary: Colors.white,
     onSecondary: Colors.black,
-    background: Color(0xFFE6FBFF),    
   ),
   useMaterial3: true,
 );

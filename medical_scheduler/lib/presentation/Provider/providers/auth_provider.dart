@@ -4,8 +4,8 @@ import 'package:medical_scheduler/data/repository/auth_repo_imp.dart';
 import 'package:medical_scheduler/data/source/data_source/authDataSrc.dart';
 import 'package:medical_scheduler/data/source/data_source_implementation/auth_data_src_impl.dart';
 import 'package:medical_scheduler/domain/repository/autho_repo.dart';
-import 'package:medical_scheduler/domain/usecases/auth/login.dart';
-import 'package:medical_scheduler/domain/usecases/auth/user_profile.dart';
+import 'package:medical_scheduler/Application/Usecases/auth/login.dart';
+import 'package:medical_scheduler/Application/Usecases/auth/user_profile.dart';
 import 'package:medical_scheduler/presentation/Provider/notifiers/auth_view_model.dart';
 import 'package:medical_scheduler/presentation/Provider/states/auth_state.dart';
 import 'package:dio/dio.dart';
@@ -50,4 +50,3 @@ final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthUiState>(
     return AuthViewModel(loginUseCase, getUserUseCase);
   },
 );
-

@@ -7,7 +7,7 @@ class Receptionist extends User {
   bool isSignedUp;
   Receptionist({
     required this.receptionistId,
-    super.username,
+    required super.username,
     required super.email,
     super.password,
     required super.role,
@@ -15,7 +15,7 @@ class Receptionist extends User {
     required super.updatedAt,
     required this.branch,
     required this.isSignedUp,
-  }):super(userId: receptionistId);
+  }) : super(userId: receptionistId);
 
   @override
   Receptionist copyWith({
