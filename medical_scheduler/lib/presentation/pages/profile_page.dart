@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/auth_provider.dart';
+import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
 import 'package:medical_scheduler/presentation/widgets/edit_profile_widget.dart';
+import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
 import 'package:medical_scheduler/presentation/widgets/profile_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 
@@ -21,52 +23,45 @@ class _ProfileState extends ConsumerState<Profile> {
 
     final user = state.user;
 
-    return Scaffold(
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SideBar(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => setState(() => isProfile = true),
-                          child: const Text('Profile'),
-                        ),
-                        TextButton(
-                          onPressed: () => setState(() => isProfile = false),
-                          child: const Text('Edit Profile'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    if (user != null)
-                      isProfile
-                          ? ProfileWidget(user: user)
-                          : const EditProfileWidget()
-                    else
-                      const Center(child: CircularProgressIndicator()),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pop(context); // Back to home
-                        },
-                        child: const Text('Back To Home'),
+    return SafeArea(
+      child: Scaffold(
+        drawer: const SideBar(),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          actions: const [PopupMenu()],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => setState(() => isProfile = true),
+                        child: const Text('Profile'),
                       ),
-                    ),
-                  ],
-                ),
+                      TextButton(
+                        onPressed: () => setState(() => isProfile = false),
+                        child: const Text('Edit Profile'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  if (user != null)
+                    isProfile
+                        ? ProfileWidget(user: user)
+                        : const EditProfileWidget()
+                  else
+                    const Center(child: CircularProgressIndicator()),
+                  const SizedBox(height: 20),
+                  BackToHome(roleId: user!.role.roleId),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

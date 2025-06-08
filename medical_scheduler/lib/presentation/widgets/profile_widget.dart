@@ -9,26 +9,42 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 20),
-      width: 295,
-      height: 250,
+      width: 250,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: const Color.fromARGB(154, 229, 249, 255),
+        color: const Color(0xFFE5F9FF),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 4,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey[200],
+            radius: 40,
+            backgroundColor: Colors.white,
             child: Image.asset(
               'assets/images/profile.png',
-              width: 80,
-              height: 80,
+              width: 60,
+              height: 60,
+              fit: BoxFit.contain,
             ),
           ),
           const SizedBox(height: 12),
-          Text(user.username, style: const TextStyle(fontSize: 20)),
+          Text(
+            user.username,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
