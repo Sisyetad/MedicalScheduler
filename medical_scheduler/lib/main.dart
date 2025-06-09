@@ -17,7 +17,7 @@ class MyApp extends ConsumerWidget {
       title: 'Medical Scheduler',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      routerConfig: router, // ✅ Use reactive router
+      routerConfig: router,
     );
   }
 }

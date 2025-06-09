@@ -13,12 +13,13 @@ class SplashPage extends ConsumerStatefulWidget {
 class _SplashPageState extends ConsumerState<SplashPage> {
   final storage = const FlutterSecureStorage();
 
+  // In your widget:
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      final authViewModel = ref.read(authViewModelProvider.notifier);
-      authViewModel.checkLoginStatus(context);
+    Future.microtask(() async {
+      await ref.read(authViewModelProvider.notifier).checkLoginStatus();
+      if (!mounted) return;
     });
   }
 
