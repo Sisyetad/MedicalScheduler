@@ -1,5 +1,5 @@
-import 'package:medical_scheduler/data/model/doctor_model.dart';
-import 'package:medical_scheduler/data/model/patient_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/doctor_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/patient_model.dart';
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
 import 'package:medical_scheduler/domain/entities/response/doctor.dart';
 
@@ -12,7 +12,7 @@ class DiagnosisHistoryModel extends DiagnosisHistory {
     required super.createdTime,
     required super.comment,
     required super.patient,
-    required super.updatedAt 
+    required super.updatedAt,
   });
 
   factory DiagnosisHistoryModel.fromJson(Map<String, dynamic> json) {
@@ -24,14 +24,14 @@ class DiagnosisHistoryModel extends DiagnosisHistory {
       createdTime: json['created_at'],
       updatedAt: json['updated_at'],
       comment: json['diagnosis_details'],
-      patient: PatientModel.fromJson(json['patient']), 
+      patient: PatientModel.fromJson(json['patient']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'diagnosisName': diagnosisName,
-      'diagnosis_id' : diagnosisId,
+      'diagnosis_id': diagnosisId,
       'doctor': doctor,
       'medication': medication,
       'createdTime': createdTime,
@@ -40,4 +40,3 @@ class DiagnosisHistoryModel extends DiagnosisHistory {
     };
   }
 }
-

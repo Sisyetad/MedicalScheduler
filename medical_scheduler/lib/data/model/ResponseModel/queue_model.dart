@@ -1,5 +1,5 @@
-import 'package:medical_scheduler/data/model/doctor_model.dart';
-import 'package:medical_scheduler/data/model/patient_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/doctor_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/patient_model.dart';
 import 'package:medical_scheduler/domain/entities/response/queue.dart';
 
 class DataQueueModel extends DataQueue {

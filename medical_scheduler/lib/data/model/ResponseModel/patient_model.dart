@@ -1,6 +1,6 @@
-import 'package:medical_scheduler/data/model/role_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/role_model.dart';
 import 'package:medical_scheduler/domain/entities/response/patient.dart';
-import 'package:medical_scheduler/data/model/branch_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/branch_model.dart';
 
 class PatientModel extends Patient {
   PatientModel({

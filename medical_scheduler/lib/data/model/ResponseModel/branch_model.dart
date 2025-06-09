@@ -1,5 +1,5 @@
-import 'package:medical_scheduler/data/model/headoffice_model.dart';
-import 'package:medical_scheduler/data/model/role_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/headoffice_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/role_model.dart';
 import 'package:medical_scheduler/domain/entities/response/Branch.dart';
 import 'package:medical_scheduler/domain/entities/response/headoffice.dart';
 

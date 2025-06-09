@@ -1,4 +1,4 @@
-import 'package:medical_scheduler/data/model/role_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/role_model.dart';
 import 'package:medical_scheduler/domain/entities/response/headoffice.dart';
 
 class HeadofficeModel extends HeadOffice {
