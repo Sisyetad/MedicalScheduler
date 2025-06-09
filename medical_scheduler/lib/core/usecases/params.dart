@@ -1,59 +1,41 @@
 // Authentication
-import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/register_request_model.dart';
+import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
+import 'package:medical_scheduler/domain/entities/request/login_request.dart';
+import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
+import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
+import 'package:medical_scheduler/domain/entities/request/signup_request.dart';
 
 class LoginParams {
-  final String email;
-  final String password;
+  final LoginRequest loginRequest;
 
-  LoginParams({required this.email, required this.password});
+  LoginParams({required this.loginRequest});
 }
 
 class RegisterParams {
-  final String name;
-  final String password;
-  final String role;
+  final SignupRequest signupRequest;
 
-  RegisterParams({
-    required this.name,
-    required this.password,
-    required this.role,
-  });
-}
-
-// User Management
-class CreateUserParams {
-  final String name;
-  final String email;
-  final int branchInt;
-
-  CreateUserParams({
-    required this.name,
-    required this.email,
-    required this.branchInt,
-  });
+  RegisterParams({required this.signupRequest});
 }
 
 class UpdateUserParams {
-  final String userName;
-  final String email;
-  final String password;
+  final int userId;
+  final RegisterRequestModel user;
 
-  UpdateUserParams({
-    required this.userName,
-    required this.email,
-    required this.password,
-  });
+  UpdateUserParams({required this.userId, required this.user});
 }
 
 //Queue management
-class CreateQueueParams {}
+class CreateQueueParams {
+  final QueueRequest queueRequest;
+  CreateQueueParams({required this.queueRequest});
+}
 
 class CreateDiagnosisParams {
   final DiagnosisRequestModel diagnosisRequest;
 
-  CreateDiagnosisParams({
-    required this.diagnosisRequest
-  });
+  CreateDiagnosisParams({required this.diagnosisRequest});
 }
 
 class UpdateQueueParams {
@@ -61,4 +43,16 @@ class UpdateQueueParams {
   final int status;
 
   UpdateQueueParams({required this.queueId, required this.status});
+}
+
+class CreateReceptionistParams {
+  final ReceptionistRequest receptionistRequest;
+
+  CreateReceptionistParams({required this.receptionistRequest});
+}
+
+class CreateDoctorParams {
+  final DoctorRequest doctorRequest;
+
+  CreateDoctorParams({required this.doctorRequest});
 }

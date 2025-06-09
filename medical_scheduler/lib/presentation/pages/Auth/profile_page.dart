@@ -30,35 +30,102 @@ class _ProfileState extends ConsumerState<Profile> {
           backgroundColor: Theme.of(context).colorScheme.tertiary,
           actions: const [PopupMenu()],
         ),
-        body: SingleChildScrollView(
+        body: SizedBox.expand(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () => setState(() => isProfile = true),
-                        child: const Text('Profile'),
-                      ),
-                      TextButton(
-                        onPressed: () => setState(() => isProfile = false),
-                        child: const Text('Edit Profile'),
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 330,
+                  height: 400,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(154, 240, 255, 255),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  if (user != null)
-                    isProfile
-                        ? ProfileWidget(user: user)
-                        : const EditProfileWidget()
-                  else
-                    const Center(child: CircularProgressIndicator()),
-                  const SizedBox(height: 20),
-                  BackToHome(roleId: user!.role.roleId),
-                ],
-              ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => setState(() => isProfile = false),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: !isProfile
+                                        ? const Color(0xFF2751C3)
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Profile',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: !isProfile
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => setState(() => isProfile = true),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: isProfile
+                                        ? const Color(0xFF2751C3)
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Edit Profile',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: isProfile
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      if (user != null)
+                        isProfile
+                            ? ProfileWidget(user: user)
+                            : const EditProfileWidget()
+                      else
+                        const Center(child: CircularProgressIndicator()),
+                      const SizedBox(height: 20),
+                      BackToHome(roleId: user!.role.roleId),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),

@@ -4,7 +4,6 @@ import 'package:medical_scheduler/core/usecases/params.dart';
 import 'package:medical_scheduler/domain/entities/response/authresponse.dart';
 import 'package:medical_scheduler/domain/repository/autho_repo.dart';
 
-
 class LoginUseCase extends UseCase<AuthResponse, LoginParams> {
   final AuthRepository repository;
 
@@ -12,6 +11,9 @@ class LoginUseCase extends UseCase<AuthResponse, LoginParams> {
 
   @override
   Future<AuthResponse> call(LoginParams params) {
-    return repository.login(params.email, params.password);
+    return repository.login(
+      params.loginRequest.email,
+      params.loginRequest.password,
+    );
   }
 }

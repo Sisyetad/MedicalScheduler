@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/core/constants/themeConstants.dart';
 import 'package:medical_scheduler/presentation/Provider/notifiers/notifiers.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SideBar extends StatefulWidget {
+class SideBar extends ConsumerStatefulWidget {
   const SideBar({super.key});
 
   @override
-  State<SideBar> createState() => _SideBarState();
+  ConsumerState<SideBar> createState() => _SideBarState();
 }
 
-class _SideBarState extends State<SideBar> {
+class _SideBarState extends ConsumerState<SideBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,8 +27,7 @@ class _SideBarState extends State<SideBar> {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              Navigator.pop(context); 
-              
+              Navigator.pop(context);
             },
           ),
           ListTile(
@@ -34,24 +35,28 @@ class _SideBarState extends State<SideBar> {
             title: const Text('Profile', style: TextStyle(color: Colors.white)),
             onTap: () {
               Navigator.pop(context);
-              context.go('/profile'); 
+              context.go('/profile');
             },
           ),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.white),
             title: const Text('Logout', style: TextStyle(color: Colors.white)),
-            onTap: () {
-              // Handle logout logic
+            onTap: () async {
+              await ref.read(authViewModelProvider.notifier).logout();
+              if (context.mounted) context.go('/auth');
             },
           ),
+          // Theme toggle remains the same
           ListTile(
             leading: IconButton(
               onPressed: () async {
                 isDarkModeNotifier.value = !isDarkModeNotifier.value;
                 final SharedPreferences preferences =
                     await SharedPreferences.getInstance();
-                await preferences.setBool(Kconstants.themeModeKey, isDarkModeNotifier.value);
-                
+                await preferences.setBool(
+                  Kconstants.themeModeKey,
+                  isDarkModeNotifier.value,
+                );
               },
               icon: ValueListenableBuilder(
                 valueListenable: isDarkModeNotifier,

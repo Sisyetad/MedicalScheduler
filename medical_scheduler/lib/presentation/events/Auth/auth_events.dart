@@ -16,3 +16,8 @@ class SubmitLogin extends AuthEvent {
   final BuildContext context;
   SubmitLogin(this.context);
 }
+
+class Logout extends AuthEvent {
+  final BuildContext context;
+  Logout(this.context);
+}

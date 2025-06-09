@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
-import 'package:medical_scheduler/Application/Usecases/Queue/getQueues.dart';
-import 'package:medical_scheduler/Application/Usecases/Queue/update_queue.dart';
+import 'package:medical_scheduler/Application/Usecases/queue/getQueues.dart';
+import 'package:medical_scheduler/Application/Usecases/queue/update_queue.dart';
 import 'package:medical_scheduler/presentation/Provider/states/Common/queue_state.dart';
 import 'package:medical_scheduler/presentation/events/Doctor/doctor_queue_events.dart';
 

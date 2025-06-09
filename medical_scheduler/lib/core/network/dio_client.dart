@@ -8,17 +8,15 @@ class DioClient {
   late final Dio _dio;
 
   DioClient(this.sessionManager)
-      : _dio = Dio(
-          BaseOptions(
-            baseUrl: ApiUrls.baseURL,
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            responseType: ResponseType.json,
-            sendTimeout: const Duration(seconds: 10),
-            receiveTimeout: const Duration(seconds: 10),
-          ),
-        ) {
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: ApiUrls.baseURL,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'},
+          responseType: ResponseType.json,
+          sendTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      ) {
     _dio.interceptors.addAll([
       LoggerInterceptor(),
       AuthInterceptor(sessionManager),
@@ -26,7 +24,6 @@ class DioClient {
   }
 
   Dio get dio => _dio;
-
 
   Future<Response> get(
     String url, {
@@ -43,7 +40,6 @@ class DioClient {
       onReceiveProgress: onReceiveProgress,
     );
   }
-
 
   Future<Response> post(
     String url, {
@@ -63,7 +59,6 @@ class DioClient {
     );
   }
 
-
   Future<Response> put(
     String url, {
     dynamic data,
@@ -81,6 +76,21 @@ class DioClient {
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
+    );
+  }
+
+  Future<Response> delete(
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    return _dio.delete(
+      url,
+      queryParameters: queryParameters,
+      options: options,
+      cancelToken: cancelToken,
     );
   }
 }

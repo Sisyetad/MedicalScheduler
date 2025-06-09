@@ -24,6 +24,8 @@ class AuthViewModel extends StateNotifier<AuthUiState> {
       state = state.copyWith(password: event.password, error: null);
     } else if (event is SubmitLogin) {
       _loginUser(event.context);
+    } else if (event is Logout) {
+      logout();
     }
   }
 
@@ -65,6 +67,16 @@ class AuthViewModel extends StateNotifier<AuthUiState> {
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       context.go('/auth');
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await storage.delete(key: 'auth_token');
+    } catch (e) {
+      print("Error during logout: $e");
+    } finally {
+      state = AuthUiState();
     }
   }
 
