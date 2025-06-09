@@ -3,8 +3,8 @@ import 'package:medical_scheduler/domain/entities/response/user.dart';
 
 class Receptionist extends User {
   final int receptionistId;
-  Branch branch;
-  bool isSignedUp;
+  final Branch branch;
+  final bool isSignedUp;
   Receptionist({
     required this.receptionistId,
     required super.username,
@@ -23,6 +23,8 @@ class Receptionist extends User {
     String? email,
     String? password,
     String? updatedAt,
+    Branch? branch,
+    bool? isSignedUp,
   }) {
     return Receptionist(
       receptionistId: receptionistId,
@@ -31,17 +33,9 @@ class Receptionist extends User {
       password: password ?? "",
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      branch: branch,
-      isSignedUp: isSignedUp,
+      branch: branch ?? this.branch,
+      isSignedUp: isSignedUp ?? this.isSignedUp,
       role: role,
     );
-  }
-
-  void updateBranch(Branch newbranch) {
-    branch = newbranch;
-  }
-
-  void signedUp() {
-    isSignedUp = !isSignedUp;
   }
 }

@@ -1,5 +1,5 @@
 // domain/repositories/diagnosis_repository.dart
-import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
 
 import '../entities/response/diagnosis_history.dart';
 

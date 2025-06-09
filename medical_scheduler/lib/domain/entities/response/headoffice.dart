@@ -1,4 +1,4 @@
-import 'package:medical_scheduler/data/model/branch_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/branch_model.dart';
 import 'package:medical_scheduler/domain/entities/response/user.dart';
 
 class HeadOffice extends User {
