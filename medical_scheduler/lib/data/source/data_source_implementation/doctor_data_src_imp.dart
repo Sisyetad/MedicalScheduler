@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:medical_scheduler/core/constants/api_urls.dart';
-import 'package:medical_scheduler/data/model/doctor_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/doctor_model.dart';
 import 'package:medical_scheduler/data/source/data_source/doctor_data_src.dart';
+import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/response/doctor.dart';
 
 class DoctorDataSourceImpl implements DoctorDataSrc {
@@ -22,10 +23,18 @@ class DoctorDataSourceImpl implements DoctorDataSrc {
   }
 
   @override
-  Future<void> createDoctor(Doctor doctor) async {
+  Future<DoctorModel> createDoctor(DoctorRequest doctor) async {
     try {
       final doctorModel = DoctorModel.fromJson(doctor as Map<String, dynamic>);
-      await dio.post('${ApiUrls.baseURL}/doctors', data: doctorModel.toJson());
+      final response = await dio.post(
+        '${ApiUrls.baseURL}/doctors',
+        data: doctorModel.toJson(),
+      );
+      if (response.statusCode == 201) {
+        return DoctorModel.fromJson(response.data);
+      } else {
+        throw Exception('Failed to create doctor: ${response.statusMessage}');
+      }
     } catch (e) {
       throw Exception('Failed to create doctor: $e');
     }

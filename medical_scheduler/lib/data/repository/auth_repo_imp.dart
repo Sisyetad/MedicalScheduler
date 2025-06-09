@@ -1,3 +1,4 @@
+import 'package:medical_scheduler/domain/entities/response/role.dart';
 import 'package:medical_scheduler/domain/entities/response/user.dart';
 
 import '../../domain/entities/response/authresponse.dart';
@@ -19,7 +20,7 @@ class AuthRepositoryImpl implements AuthRepository {
     String name,
     String email,
     String password,
-    String role,
+    Role role,
   ) {
     return dataSource.register(name, email, password, role);
   }

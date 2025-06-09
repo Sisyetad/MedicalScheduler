@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:medical_scheduler/data/model/queue_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/queue_request_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/queue_model.dart';
 import 'package:medical_scheduler/data/source/data_source/queue_data_src.dart';
-import 'package:medical_scheduler/domain/entities/response/queue.dart';
+import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
 
 class QueueDataSourceImpl implements QueueDataSrc {
   final Dio dio;
@@ -31,16 +32,24 @@ class QueueDataSourceImpl implements QueueDataSrc {
   }
 
   @override
-  Future<void> createQueue(DataQueue queue) async {
+  Future<DataQueueModel> createQueue(QueueRequest queue) async {
     try {
-      await dio.post('/queues', data: (queue as DataQueueModel).toJson());
+      final response = await dio.post(
+        '/queues',
+        data: (queue as QueueRequestModel).toJson(),
+      );
+      if (response.statusCode == 201) {
+        return DataQueueModel.fromJson(response.data);
+      } else {
+        throw Exception("Failed to load branch: ${response.statusCode}");
+      }
     } catch (e) {
       throw Exception('Failed to create queue: $e');
     }
   }
 
   @override
-  Future<void> updateQueue(int queueId, int status ) async {
+  Future<void> updateQueue(int queueId, int status) async {
     try {
       await dio.put('/queues/$queueId', data: {"status": status});
     } catch (e) {

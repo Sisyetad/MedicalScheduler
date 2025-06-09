@@ -1,5 +1,6 @@
 // data/repositories/doctor_repository_impl.dart
 import 'package:medical_scheduler/data/source/data_source/doctor_data_src.dart';
+import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/response/doctor.dart';
 import 'package:medical_scheduler/domain/repository/doctor_repo.dart';
 
@@ -11,5 +12,10 @@ class DoctorRepositoryImpl implements DoctorRepository {
   @override
   Future<List<Doctor>> getAllDoctors() async {
     return await dataSource.getAllDoctors();
+  }
+
+  @override
+  Future<Doctor> createDoctor(DoctorRequest doctor) async {
+    return await dataSource.createDoctor(doctor);
   }
 }

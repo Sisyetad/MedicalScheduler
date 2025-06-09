@@ -1,4 +1,5 @@
-import 'package:medical_scheduler/data/model/user_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/user_model.dart';
+import 'package:medical_scheduler/domain/entities/response/role.dart';
 
 import '../../../domain/entities/response/authresponse.dart';
 
@@ -8,7 +9,7 @@ abstract class AuthDataSource {
     String name,
     String email,
     String password,
-    String role,
+    Role role,
   );
   Future<UserModel> getUserProfile(String token);
 }

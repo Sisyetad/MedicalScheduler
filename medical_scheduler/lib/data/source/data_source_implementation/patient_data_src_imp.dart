@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:medical_scheduler/data/model/patient_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/patient_model.dart';
 import 'package:medical_scheduler/data/source/data_source/patient_data_src.dart';
 import 'package:medical_scheduler/domain/entities/response/patient.dart';
 
@@ -33,10 +33,7 @@ class PatientDataSourceImpl implements PatientDataSrc {
   @override
   Future<void> createPatient(Patient patient) async {
     try {
-      await dio.post(
-        '/patients',
-        data: (patient as PatientModel).toJson(),
-      );
+      await dio.post('/patients', data: (patient as PatientModel).toJson());
     } catch (e) {
       throw Exception('Failed to create patient: $e');
     }

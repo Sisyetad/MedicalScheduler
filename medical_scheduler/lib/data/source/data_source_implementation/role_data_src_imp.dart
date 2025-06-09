@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:medical_scheduler/data/source/data_source/role_data_src.dart';
 import '../../../domain/entities/response/role.dart';
-import '../../../data/model/role_model.dart';
+import '../../model/ResponseModel/role_model.dart';
 
 class RoleDataSourceImpl implements RoleDataSource {
   final Dio dio;

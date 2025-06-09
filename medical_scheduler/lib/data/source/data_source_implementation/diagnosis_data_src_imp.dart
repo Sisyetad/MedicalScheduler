@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:medical_scheduler/data/model/diagnosis_history_model.dart';
-import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/diagnosis_history_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
 import 'package:medical_scheduler/data/source/data_source/diagnosis_data_src.dart';
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
 
@@ -32,12 +32,11 @@ class DiagnosisDataSrcImpl implements DiagnosisDataSrc {
   }
 
   @override
-  Future<DiagnosisHistory> createDiagnosis(DiagnosisRequestModel diagnosis) async {
+  Future<DiagnosisHistory> createDiagnosis(
+    DiagnosisRequestModel diagnosis,
+  ) async {
     try {
-      final response = await dio.post(
-        '/diagnoses',
-        data: diagnosis.toJson(),
-      );
+      final response = await dio.post('/diagnoses', data: diagnosis.toJson());
       return DiagnosisHistoryModel.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to create diagnosis: $e');

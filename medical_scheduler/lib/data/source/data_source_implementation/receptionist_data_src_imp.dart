@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:medical_scheduler/data/model/receptionist_model.dart';
+import 'package:medical_scheduler/data/model/ResponseModel/receptionist_model.dart';
 import 'package:medical_scheduler/data/source/data_source/receptionist_data_src.dart';
+import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
 import 'package:medical_scheduler/domain/entities/response/receptionist.dart';
 
 class ReceptionistDataSrcImp implements ReceptionistDataSrc {
@@ -31,9 +32,21 @@ class ReceptionistDataSrcImp implements ReceptionistDataSrc {
   }
 
   @override
-  Future<void> createReceptionist(Receptionist receptionist) async {
+  Future<Receptionist> createReceptionist(
+    ReceptionistRequest receptionist,
+  ) async {
     try {
-      await dio.post('/receptionists', data: (receptionist as ReceptionistModel).toJson());
+      final response = await dio.post(
+        '/receptionists',
+        data: (receptionist as ReceptionistModel).toJson(),
+      );
+      if (response.statusCode == 201) {
+        return ReceptionistModel.fromJson(response.data);
+      } else {
+        throw Exception(
+          'Failed to create receptionist: ${response.statusMessage}',
+        );
+      }
     } catch (e) {
       throw Exception('Failed to create receptionist: $e');
     }
@@ -42,9 +55,14 @@ class ReceptionistDataSrcImp implements ReceptionistDataSrc {
   @override
   Future<void> updateReceptionist(Receptionist receptionist) async {
     try {
-      await dio.put('/receptionists/${receptionist.userId}', data: (receptionist as ReceptionistModel).toJson());
+      await dio.put(
+        '/receptionists/${receptionist.userId}',
+        data: (receptionist as ReceptionistModel).toJson(),
+      );
     } catch (e) {
-      throw Exception('Failed to update receptionist with ID ${receptionist.userId}: $e');
+      throw Exception(
+        'Failed to update receptionist with ID ${receptionist.userId}: $e',
+      );
     }
   }
 

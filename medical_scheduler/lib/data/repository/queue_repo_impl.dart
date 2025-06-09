@@ -1,4 +1,5 @@
 // data/repositories/queue_repository_impl.dart
+import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
 import 'package:medical_scheduler/domain/entities/response/queue.dart';
 import 'package:medical_scheduler/data/source/data_source/queue_data_src.dart';
 import 'package:medical_scheduler/domain/repository/queue_repo.dart';
@@ -19,12 +20,12 @@ class QueueRepositoryImpl implements DataQueueRepository {
   }
 
   @override
-  Future<void> createQueue(DataQueue queue) async {
-    await dataSource.createQueue(queue);
+  Future<DataQueue> createQueue(QueueRequest queue) async {
+    return await dataSource.createQueue(queue);
   }
 
   @override
-  Future<void> updateQueue(int queueId, int status ) async {
+  Future<void> updateQueue(int queueId, int status) async {
     await dataSource.updateQueue(queueId, status);
   }
 
