@@ -8,27 +8,30 @@ import 'package:medical_scheduler/presentation/pages/Doctor/doctor_queue_page.da
 import 'package:medical_scheduler/presentation/pages/Doctor/patient_history_page.dart';
 import 'package:medical_scheduler/presentation/pages/Auth/profile_page.dart';
 import 'package:medical_scheduler/presentation/pages/Auth/signup_login_page.dart';
-import 'dart:async';
-import 'package:flutter/foundation.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authViewModelProvider);
-
+  final user = ref.watch(authViewModelProvider.select((s) => s.user));
   return GoRouter(
     initialLocation: '/',
-    refreshListenable: GoRouterRefreshStream(
-      ref.watch(authViewModelProvider.notifier).stream,
-    ),
+    // REMOVE refreshListenable!
     redirect: (context, state) {
-      final loggedIn = authState.user != null;
+      final user = ref.watch(authViewModelProvider.select((s) => s.user));
+      final isChecking = ref.watch(
+        authViewModelProvider.select((s) => s.isLoading),
+      );
       final loggingIn = state.uri.toString() == '/auth';
 
-      if (!loggedIn && !loggingIn) {
+      // While checking, stay on splash
+      if (isChecking) return null;
+
+      // Not logged in, not on login page? Go to login
+      if (user == null && !loggingIn) {
         return '/auth';
       }
 
-      if (loggedIn && loggingIn) {
-        final roleId = authState.user?.role.roleId;
+      // Logged in, but on login or splash? Go to home
+      if (user != null && (loggingIn || state.uri.toString() == '/')) {
+        final roleId = user.role.roleId;
         switch (roleId) {
           case 4:
             return '/doctor_queue';
@@ -78,19 +81,3 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
-
-class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    _subscription = stream.asBroadcastStream().listen((_) {
-      notifyListeners();
-    });
-  }
-
-  late final StreamSubscription<dynamic> _subscription;
-
-  @override
-  void dispose() {
-    _subscription.cancel();
-    super.dispose();
-  }
-}
