@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/core/constants/themeConstants.dart';
 import 'package:medical_scheduler/presentation/Provider/notifiers/notifiers.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
+import 'package:medical_scheduler/presentation/events/Auth/auth_events.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SideBar extends ConsumerStatefulWidget {
@@ -42,7 +43,7 @@ class _SideBarState extends ConsumerState<SideBar> {
             leading: const Icon(Icons.logout, color: Colors.white),
             title: const Text('Logout', style: TextStyle(color: Colors.white)),
             onTap: () async {
-              await ref.read(authViewModelProvider.notifier).logout();
+              ref.read(authViewModelProvider.notifier).onEvent(Logout(context));
               if (context.mounted) context.go('/auth');
             },
           ),

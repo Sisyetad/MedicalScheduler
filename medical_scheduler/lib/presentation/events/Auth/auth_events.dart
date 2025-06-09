@@ -13,8 +13,9 @@ class UpdatePassword extends AuthEvent {
 }
 
 class SubmitLogin extends AuthEvent {
-  final BuildContext context;
-  SubmitLogin(this.context);
+  final String email;
+  final String password;
+  SubmitLogin({required this.email, required this.password});
 }
 
 class Logout extends AuthEvent {

@@ -38,7 +38,7 @@ class _ProfileState extends ConsumerState<Profile> {
               children: [
                 Container(
                   width: 330,
-                  height: 400,
+                  height: 500,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(154, 240, 255, 255),
@@ -64,31 +64,8 @@ class _ProfileState extends ConsumerState<Profile> {
                           children: [
                             Expanded(
                               child: GestureDetector(
-                                onTap: () => setState(() => isProfile = false),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: !isProfile
-                                        ? const Color(0xFF2751C3)
-                                        : Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Profile',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: !isProfile
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () => setState(() => isProfile = true),
+                                onTap: () =>
+                                    setState(() => isProfile = !isProfile),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: isProfile
@@ -98,7 +75,7 @@ class _ProfileState extends ConsumerState<Profile> {
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'Edit Profile',
+                                    'Profile',
                                     style: TextStyle(
                                       fontSize: 18,
                                       color: isProfile
@@ -110,10 +87,35 @@ class _ProfileState extends ConsumerState<Profile> {
                                 ),
                               ),
                             ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () =>
+                                    setState(() => isProfile = !isProfile),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: !isProfile
+                                        ? const Color(0xFF2751C3)
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Edit Profile',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: !isProfile
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 30),
                       if (user != null)
                         isProfile
                             ? ProfileWidget(user: user)

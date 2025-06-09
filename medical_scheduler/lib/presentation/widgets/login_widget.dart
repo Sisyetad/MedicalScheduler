@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Auth/auth_state.dart';
 import 'package:medical_scheduler/presentation/events/Auth/auth_events.dart';
 import 'package:medical_scheduler/presentation/widgets/dropDown.dart';
 
@@ -14,9 +16,40 @@ class LoginWidget extends ConsumerStatefulWidget {
 class _LoginWidgetState extends ConsumerState<LoginWidget> {
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
+  late final ProviderSubscription<AuthUiState> _authListener;
+
+  @override
+  void initState() {
+    super.initState();
+    _authListener = ref.listenManual<AuthUiState>(authViewModelProvider, (
+      prev,
+      next,
+    ) {
+      if (next.user != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          final roleId = next.user!.role.roleId;
+          switch (roleId) {
+            case 4:
+              context.go('/doctor_queue');
+              break;
+            case 5:
+              context.go('/receptionist_home');
+              break;
+            case 2:
+              context.go('/admin_home');
+              break;
+            default:
+              context.go('/auth');
+          }
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
+    _authListener.close();
     controllerEmail.dispose();
     controllerPassword.dispose();
     super.dispose();
@@ -24,7 +57,10 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authViewModelProvider);
+    final error = ref.watch(authViewModelProvider.select((s) => s.error));
+    final isLoading = ref.watch(
+      authViewModelProvider.select((s) => s.isLoading),
+    );
     final authViewModel = ref.read(authViewModelProvider.notifier);
 
     return Column(
@@ -34,7 +70,6 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
           child: TextField(
             controller: controllerEmail,
-            onChanged: (value) => authViewModel.onEvent(UpdateEmail(value)),
             decoration: const InputDecoration(labelText: 'Email'),
           ),
         ),
@@ -43,30 +78,31 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
           child: TextField(
             controller: controllerPassword,
             obscureText: true,
-            onChanged: (value) => authViewModel.onEvent(UpdatePassword(value)),
             decoration: const InputDecoration(labelText: 'Password'),
           ),
         ),
-        if (authState.error != null)
+        if (error != null)
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
-              authState.error!,
-              style: const TextStyle(color: Colors.red),
-            ),
+            child: Text(error, style: const TextStyle(color: Colors.red)),
           ),
         const SizedBox(height: 20),
         OutlinedButton(
-          onPressed: authState.isLoading
+          onPressed: isLoading
               ? null
-              : () => authViewModel.onEvent(SubmitLogin(context)),
+              : () => authViewModel.onEvent(
+                  SubmitLogin(
+                    email: controllerEmail.text,
+                    password: controllerPassword.text,
+                  ),
+                ),
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
             backgroundColor: const Color(0xFF2751C3),
           ),
-          child: authState.isLoading
+          child: isLoading
               ? const SizedBox(
                   height: 20,
                   width: 20,
