@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
-import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
-import 'package:medical_scheduler/Application/Usecases/doctor/createDiagnosis.dart';
-import 'package:medical_scheduler/presentation/Provider/states/diagnosis_form_state.dart';
-import 'package:medical_scheduler/presentation/events/diagnosis_form_events.dart';
+import 'package:medical_scheduler/Application/Usecases/diagnosis/createDiagnosis.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Doctor/diagnosis_form_state.dart';
+import 'package:medical_scheduler/presentation/events/Doctor/diagnosis_form_events.dart';
 
 class DiagnosisFormNotifier extends StateNotifier<DiagnosisFormState> {
   final CreateDiagnosis createDiagnosisUseCase;

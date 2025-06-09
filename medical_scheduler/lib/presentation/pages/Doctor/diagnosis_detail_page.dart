@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/presentation/Provider/providers/diagnosis_provider.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Doctor/diagnosis_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
 import 'package:medical_scheduler/presentation/widgets/card_widget.dart';
 
@@ -18,7 +18,9 @@ class _DiagnosisState extends ConsumerState<DiagnosisSummaryScreen> {
     super.initState();
     // Fetch diagnosis by ID when page loads
     Future.microtask(() {
-      ref.read(diagnosisDetailNotifierProvider.notifier).fetchDiagnosis(widget.diagnosisId);
+      ref
+          .read(diagnosisDetailNotifierProvider.notifier)
+          .fetchDiagnosis(widget.diagnosisId);
     });
   }
 
@@ -41,7 +43,7 @@ class _DiagnosisState extends ConsumerState<DiagnosisSummaryScreen> {
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
-                if (state.isLoading) 
+                if (state.isLoading)
                   const CircularProgressIndicator()
                 else if (state.error != null)
                   Padding(
@@ -56,7 +58,7 @@ class _DiagnosisState extends ConsumerState<DiagnosisSummaryScreen> {
                 else
                   const Text("No diagnosis found."),
                 const SizedBox(height: 20),
-                const BackToHome(roleId: 4,),
+                const BackToHome(roleId: 4),
               ],
             ),
           ),

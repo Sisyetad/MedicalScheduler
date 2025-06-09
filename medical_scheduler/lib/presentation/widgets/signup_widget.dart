@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medical_scheduler/presentation/pages/doctor_queue_page.dart';
+import 'package:medical_scheduler/presentation/pages/Doctor/doctor_queue_page.dart';
 import 'package:medical_scheduler/presentation/widgets/dropDown.dart';
 
 class SignupWidget extends StatefulWidget {

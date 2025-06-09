@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/Application/Usecases/doctor/displayDiagnoses.dart';
+import 'package:medical_scheduler/Application/Usecases/diagnosis/displayDiagnoses.dart';
 import 'package:medical_scheduler/Application/Usecases/patient/getpatient.dart';
-import 'package:medical_scheduler/presentation/Provider/states/patient_history_state.dart';
-import 'package:medical_scheduler/presentation/events/patient_history_events.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Doctor/patient_history_state.dart';
+import 'package:medical_scheduler/presentation/events/Doctor/patient_history_events.dart';
 
 class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
   final GetAllDiagnoses getAllDiagnoses;

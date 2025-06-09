@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart'; 
-import 'package:medical_scheduler/presentation/Provider/providers/diagnosis_form_provider.dart';
-import 'package:medical_scheduler/presentation/events/diagnosis_form_events.dart';
+import 'package:go_router/go_router.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Doctor/diagnosis_form_provider.dart';
+import 'package:medical_scheduler/presentation/events/Doctor/diagnosis_form_events.dart';
 
 class AddDiagnosisScreen extends ConsumerStatefulWidget {
   final int patientId;
@@ -30,15 +30,13 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
     final state = ref.watch(diagnosisFormNotifierProvider);
     final notifier = ref.read(diagnosisFormNotifierProvider.notifier);
 
-
     if (state.isSuccess) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Diagnosis added successfully!')),
         );
         notifier.state = notifier.state.copywith(isSuccess: false);
-        
-        
+
         context.go('/patient_history/${widget.patientId}');
       });
     }
@@ -62,8 +60,8 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                   controller: _diagnosisController,
                   decoration: InputDecoration(
                     labelText: 'Diagnosis Name',
-                    errorText: state.error != null &&
-                            _diagnosisController.text.isEmpty
+                    errorText:
+                        state.error != null && _diagnosisController.text.isEmpty
                         ? 'Please enter a diagnosis name'
                         : null,
                   ),
@@ -91,13 +89,17 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                     ? CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () async {
-                          final diagnosisText = _diagnosisController.text.trim();
-                          final medicationText = _medicationController.text.trim();
+                          final diagnosisText = _diagnosisController.text
+                              .trim();
+                          final medicationText = _medicationController.text
+                              .trim();
                           final commentText = _commentsController.text.trim();
 
                           if (diagnosisText.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Diagnosis Name is required')),
+                              SnackBar(
+                                content: Text('Diagnosis Name is required'),
+                              ),
                             );
                             return;
                           }
@@ -108,11 +110,13 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                             medication: medicationText,
                             comment: commentText,
                             patientId: widget.patientId,
-                            doctorId: 1, 
+                            doctorId: 1,
                             visible: true,
                           );
 
-                          notifier.state = state.copywith(diagnosis: updatedRequest);
+                          notifier.state = state.copywith(
+                            diagnosis: updatedRequest,
+                          );
                           await notifier.mapEventToState(SubmitForm());
                         },
                         child: Text('Add Diagnosis'),

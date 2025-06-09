@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/presentation/Provider/providers/queue_provider.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Doctor/queue_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/completed_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/pending_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
 import 'package:medical_scheduler/presentation/widgets/resolved_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 import 'package:medical_scheduler/presentation/widgets/doctor_queue_widget.dart';
-import 'package:medical_scheduler/presentation/events/queue_events.dart';
+import 'package:medical_scheduler/presentation/events/Doctor/doctor_queue_events.dart';
 
 class DoctorPage extends ConsumerStatefulWidget {
   const DoctorPage({super.key});

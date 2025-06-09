@@ -5,9 +5,9 @@ import 'package:medical_scheduler/data/source/data_source/authDataSrc.dart';
 import 'package:medical_scheduler/data/source/data_source_implementation/auth_data_src_impl.dart';
 import 'package:medical_scheduler/domain/repository/autho_repo.dart';
 import 'package:medical_scheduler/Application/Usecases/auth/login.dart';
-import 'package:medical_scheduler/Application/Usecases/auth/user_profile.dart';
-import 'package:medical_scheduler/presentation/Provider/notifiers/auth_view_model.dart';
-import 'package:medical_scheduler/presentation/Provider/states/auth_state.dart';
+import 'package:medical_scheduler/Application/Usecases/profile/user_profile.dart';
+import 'package:medical_scheduler/presentation/Provider/notifiers/Auth/auth_view_model.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Auth/auth_state.dart';
 import 'package:dio/dio.dart';
 import 'package:medical_scheduler/core/network/dio_client.dart';
 

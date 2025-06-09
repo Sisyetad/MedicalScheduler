@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/presentation/Provider/providers/auth_provider.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
 import 'package:medical_scheduler/presentation/widgets/edit_profile_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';

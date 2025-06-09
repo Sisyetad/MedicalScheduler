@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
 import 'package:medical_scheduler/Application/Usecases/auth/login.dart';
-import 'package:medical_scheduler/Application/Usecases/auth/user_profile.dart';
-import 'package:medical_scheduler/presentation/events/auth_events.dart';
-import 'package:medical_scheduler/presentation/Provider/states/auth_state.dart';
+import 'package:medical_scheduler/Application/Usecases/profile/user_profile.dart';
+import 'package:medical_scheduler/data/model/RequestModel/login_request_model.dart';
+import 'package:medical_scheduler/domain/entities/request/login_request.dart';
+import 'package:medical_scheduler/presentation/events/Auth/auth_events.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Auth/auth_state.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthViewModel extends StateNotifier<AuthUiState> {
@@ -29,7 +31,11 @@ class AuthViewModel extends StateNotifier<AuthUiState> {
     state = state.copyWith(isLoading: true, error: null);
     try {
       final token = await loginUseCase.call(
-        LoginParams(email: state.email, password: state.password),
+        LoginParams(
+          loginRequest:
+              LoginRequestModel(email: state.email, password: state.password)
+                  as LoginRequest,
+        ),
       );
 
       await storage.write(key: 'auth_token', value: token.token);

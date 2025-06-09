@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
 import 'package:medical_scheduler/Application/Usecases/Queue/getQueues.dart';
 import 'package:medical_scheduler/Application/Usecases/Queue/update_queue.dart';
-import 'package:medical_scheduler/presentation/Provider/states/queue_state.dart';
-import 'package:medical_scheduler/presentation/events/queue_events.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Common/queue_state.dart';
+import 'package:medical_scheduler/presentation/events/Doctor/doctor_queue_events.dart';
 
 class DoctorQueueNotifier extends StateNotifier<QueueUiState> {
   final UpdateQueue updateQueueUseCase;

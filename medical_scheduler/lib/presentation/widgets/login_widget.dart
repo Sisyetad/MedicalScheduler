@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/presentation/Provider/providers/auth_provider.dart';
-import 'package:medical_scheduler/presentation/events/auth_events.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
+import 'package:medical_scheduler/presentation/events/Auth/auth_events.dart';
 import 'package:medical_scheduler/presentation/widgets/dropDown.dart';
 
 class LoginWidget extends ConsumerStatefulWidget {
@@ -26,7 +26,7 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authViewModelProvider);
     final authViewModel = ref.read(authViewModelProvider.notifier);
-    
+
     return Column(
       children: [
         RoleDropdown(),
@@ -57,30 +57,28 @@ class _LoginWidgetState extends ConsumerState<LoginWidget> {
           ),
         const SizedBox(height: 20),
         OutlinedButton(
-          onPressed:
-              authState.isLoading
-                  ? null
-                  : () => authViewModel.onEvent(SubmitLogin(context)),
+          onPressed: authState.isLoading
+              ? null
+              : () => authViewModel.onEvent(SubmitLogin(context)),
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
             backgroundColor: const Color(0xFF2751C3),
           ),
-          child:
-              authState.isLoading
-                  ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                  : const Text(
-                    "Login",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+          child: authState.isLoading
+              ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
+                )
+              : const Text(
+                  "Login",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
         ),
       ],
     );

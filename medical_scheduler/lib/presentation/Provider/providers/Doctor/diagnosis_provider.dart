@@ -6,10 +6,10 @@ import 'package:medical_scheduler/data/repository/diagnosis_repo_impl.dart';
 import 'package:medical_scheduler/data/source/data_source/diagnosis_data_src.dart';
 import 'package:medical_scheduler/data/source/data_source_implementation/diagnosis_data_src_imp.dart';
 import 'package:medical_scheduler/domain/repository/diagnosis_repo.dart';
-import 'package:medical_scheduler/Application/Usecases/doctor/displayDiagnoses.dart';
-import 'package:medical_scheduler/Application/Usecases/doctor/getDiagnosis.dart';
-import 'package:medical_scheduler/presentation/Provider/notifiers/diagnosis_detail_viewmodel.dart';
-import 'package:medical_scheduler/presentation/Provider/states/diagnosis_detail_state.dart';
+import 'package:medical_scheduler/Application/Usecases/diagnosis/displayDiagnoses.dart';
+import 'package:medical_scheduler/Application/Usecases/diagnosis/getDiagnosis.dart';
+import 'package:medical_scheduler/presentation/Provider/notifiers/Doctor/diagnosis_detail_viewmodel.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Doctor/diagnosis_detail_state.dart';
 
 final sessionManagerProvider = Provider((ref) => SecureSessionManager());
 

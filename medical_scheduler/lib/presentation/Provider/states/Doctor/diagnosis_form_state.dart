@@ -1,4 +1,4 @@
-import 'package:medical_scheduler/data/model/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
 
 class DiagnosisFormState {
   final bool isLoading;
@@ -10,8 +10,8 @@ class DiagnosisFormState {
     this.isLoading = false,
     this.isSuccess = false,
     this.error,
-    DiagnosisRequestModel? diagnosis
-  }): diagnosis = diagnosis?? DiagnosisRequestModel.empty();
+    DiagnosisRequestModel? diagnosis,
+  }) : diagnosis = diagnosis ?? DiagnosisRequestModel.empty();
 
   DiagnosisFormState copywith({
     bool? isLoading,

@@ -8,8 +8,8 @@ import 'package:medical_scheduler/data/source/data_source_implementation/queue_d
 import 'package:medical_scheduler/domain/repository/queue_repo.dart';
 import 'package:medical_scheduler/Application/Usecases/Queue/getQueues.dart';
 import 'package:medical_scheduler/Application/Usecases/Queue/update_queue.dart';
-import 'package:medical_scheduler/presentation/Provider/notifiers/doctor_queue_view_model.dart';
-import 'package:medical_scheduler/presentation/Provider/states/queue_state.dart';
+import 'package:medical_scheduler/presentation/Provider/notifiers/Doctor/doctor_queue_view_model.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Common/queue_state.dart';
 
 final sessionManagerProvider = Provider((ref) => SecureSessionManager());
 

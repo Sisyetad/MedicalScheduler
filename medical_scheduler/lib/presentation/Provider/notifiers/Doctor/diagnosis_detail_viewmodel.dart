@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/Application/Usecases/doctor/getDiagnosis.dart';
-import 'package:medical_scheduler/presentation/Provider/states/diagnosis_detail_state.dart';
+import 'package:medical_scheduler/Application/Usecases/diagnosis/getDiagnosis.dart';
+import 'package:medical_scheduler/presentation/Provider/states/Doctor/diagnosis_detail_state.dart';
 
 class DiagnosisDetailNotifier extends StateNotifier<DiagnosisDetailUiState> {
   final GetDiagnosisById getDiagnosisById;
