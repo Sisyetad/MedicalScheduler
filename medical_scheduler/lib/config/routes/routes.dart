@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 import 'package:medical_scheduler/home_page.dart';
+import 'package:medical_scheduler/presentation/pages/Admin/add_employee_page.dart';
+import 'package:medical_scheduler/presentation/pages/Admin/admin_dashboard_page.dart';
 import 'package:medical_scheduler/presentation/pages/Doctor/add_diagnosis_page.dart';
 import 'package:medical_scheduler/presentation/pages/Doctor/diagnosis_detail_page.dart';
 import 'package:medical_scheduler/presentation/pages/Doctor/doctor_queue_page.dart';
@@ -51,6 +53,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/auth',
         builder: (context, state) => const LoginSignUpPage(),
+      ),
+      GoRoute(
+        path: '/admin_home',
+        builder: (context, state) => const AdminDashboardPage(),
+      ),
+      GoRoute(
+        path: '/add_employee',
+        builder: (context, state) => const AddEmployeePage(),
       ),
       GoRoute(
         path: '/doctor_queue',
