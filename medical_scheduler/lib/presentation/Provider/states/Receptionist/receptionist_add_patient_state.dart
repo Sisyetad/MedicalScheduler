@@ -1,10 +1,10 @@
-import 'package:medical_scheduler/domain/entities/response/patient.dart';
+import 'package:medical_scheduler/data/model/RequestModel/patient_request_model.dart';
 
 class ReceptionistAddPatientState {
   final bool isLoading;
   final bool isSuccess;
   final String? error;
-  final Patient? patient;
+  final PatientRequestModel? patient;
 
   ReceptionistAddPatientState({
     this.isLoading = false,
@@ -17,7 +17,7 @@ class ReceptionistAddPatientState {
     bool? isLoading,
     bool? isSuccess,
     String? error,
-    Patient? patient,
+    PatientRequestModel? patient,
   }) {
     return ReceptionistAddPatientState(
       isLoading: isLoading ?? this.isLoading,

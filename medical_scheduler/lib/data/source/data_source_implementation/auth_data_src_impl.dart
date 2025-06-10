@@ -40,14 +40,13 @@ class AuthDataSourceImpl implements AuthDataSource {
     Role role,
   ) async {
     try {
+      String roleName = role.name.toLowerCase();
+      if (roleName == "branch") {
+        roleName = 'branche';
+      }
       final response = await dio.post(
-        '/users/register',
-        data: RegisterRequestModel(
-          name: name,
-          email: email,
-          password: password,
-          role: role,
-        ).toJson(),
+        '/users/${roleName}s/signup/$email',
+        data: SignUpBodyModel(name: name, password: password).toJson(),
       );
 
       final data = response.data;

@@ -6,6 +6,8 @@ class SubmitPatientForm extends AddPatientEvent {
   final String email;
   final String address;
   final String phoneNumber;
+  final String gender;
+  final int registeredBy;
 
   SubmitPatientForm({
     required this.fullName,
@@ -13,5 +15,7 @@ class SubmitPatientForm extends AddPatientEvent {
     required this.email,
     required this.address,
     required this.phoneNumber,
+    required this.gender,
+    required this.registeredBy,
   });
-} 
+}

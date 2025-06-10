@@ -15,3 +15,21 @@ class RegisterRequestModel extends SignupRequest {
     'role': role,
   };
 }
+
+class SignUpBodyModel extends SignupBody {
+  SignUpBodyModel({
+    required super.name,
+    required super.password,
+    super.location,
+    super.speciality,
+    super.role,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'password': password,
+    'location': location ?? "",
+    'speciality': speciality ?? "",
+    'role': role?.name.toLowerCase(),
+  };
+}

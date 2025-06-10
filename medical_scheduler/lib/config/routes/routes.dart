@@ -105,8 +105,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ReceptionistQueuePage(),
       ),
       GoRoute(
-        path: '/receptionist/add-patient',
-        builder: (context, state) => const AddPatientPage(),
+        path: '/receptionist/add-patient/:registerId',
+        builder: (context, state) {
+          final registerdBId = int.parse(state.pathParameters['registerId']!);
+          return AddPatientPage(receptionistId: registerdBId);
+        },
       ),
     ],
   );
