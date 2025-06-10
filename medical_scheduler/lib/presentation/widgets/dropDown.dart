@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Common/role_provider.dart';
 
-class RoleDropdown extends StatefulWidget {
+class RoleDropdown extends ConsumerWidget {
   const RoleDropdown({super.key});
 
   @override
-  _RoleDropdownState createState() => _RoleDropdownState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedRole = ref.watch(roleProvider);
 
-class _RoleDropdownState extends State<RoleDropdown> {
-  String? selectedRole;
-
-  @override
-  Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       value: selectedRole,
       decoration: InputDecoration(
@@ -21,19 +18,21 @@ class _RoleDropdownState extends State<RoleDropdown> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
-      items: [
+      items: const [
         DropdownMenuItem(value: null, child: Text('Select Role')),
-        DropdownMenuItem(value: 'Doctor', child: Text('Doctor')),
-        DropdownMenuItem(value: 'Receptionist', child: Text('Receptionist')),
-        DropdownMenuItem(value: 'Admin', child: Text('Admin')),
+        DropdownMenuItem(value: 'doctor', child: Text('Doctor')),
+        DropdownMenuItem(value: 'receptionist', child: Text('Receptionist')),
+        DropdownMenuItem(value: 'admin', child: Text('Admin')),
       ],
       onChanged: (value) {
-        setState(() {
-          selectedRole = value;
-        });
+        ref.read(roleProvider.notifier).state = value;
       },
+      validator: (value) => value == null ? 'Please select a role' : null,
     );
   }
 }

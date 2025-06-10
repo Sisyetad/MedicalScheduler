@@ -27,8 +27,8 @@ class DoctorQueueNotifier extends StateNotifier<QueueUiState> {
 
       final result = await getAllQueues();
 
-      final queues = result;
-      final completed = queues.where((q) => q.status == 3).length;
+      final queues = result.where((q) => q.status != 3).toList();
+      final completed = result.where((q) => q.status == 3).length;
       final pending = queues.where((q) => q.status == 1).length;
       final resolvedPending = queues.where((q) => q.status == 2).length;
 

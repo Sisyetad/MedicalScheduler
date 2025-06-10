@@ -40,5 +40,3 @@ class SubmitSignup extends AuthEvent {
     required this.role,
   });
 }
-
-
