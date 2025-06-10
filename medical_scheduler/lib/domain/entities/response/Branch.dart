@@ -8,7 +8,6 @@ class Branch extends User {
   final String? specialization;
   final bool? isSignedUp;
   final HeadOffice? headOffice;
-  
 
   Branch({
     required this.branchId,
@@ -23,7 +22,7 @@ class Branch extends User {
     this.isSignedUp,
     this.headOffice,
     this.location,
-  }):super(userId: branchId);
+  }) : super(userId: branchId);
 
   @override
   Branch copyWith({
@@ -43,11 +42,11 @@ class Branch extends User {
       password: password ?? "",
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      contactPhone: contactPhone?? this.contactPhone,
-      specialization: specialization?? this.specialization,
-      isSignedUp: isSignedUp?? this.isSignedUp,
+      contactPhone: contactPhone ?? this.contactPhone,
+      specialization: specialization ?? this.specialization,
+      isSignedUp: isSignedUp ?? this.isSignedUp,
       headOffice: headOffice,
-      location: location?? this.location,
+      location: location ?? this.location,
       role: role,
     );
   }

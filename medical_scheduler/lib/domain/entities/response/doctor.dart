@@ -17,7 +17,7 @@ class Doctor extends User {
     this.specialization,
     this.branch,
     this.isSignedUp,
-  }):super(userId: doctorId);
+  }) : super(userId: doctorId);
 
   @override
   Doctor copyWith({
@@ -27,7 +27,7 @@ class Doctor extends User {
     String? updatedAt,
     String? specialization,
     Branch? branch,
-    bool? isSignedUp
+    bool? isSignedUp,
   }) {
     return Doctor(
       doctorId: doctorId,
@@ -36,12 +36,10 @@ class Doctor extends User {
       password: password ?? "",
       createdAt: createdAt,
       updatedAt: updatedAt ?? DateTime.now().toIso8601String(),
-      specialization: specialization?? this.specialization,
-      branch: branch?? this.branch,
-      isSignedUp: isSignedUp?? this.isSignedUp,
+      specialization: specialization ?? this.specialization,
+      branch: branch ?? this.branch,
+      isSignedUp: isSignedUp ?? this.isSignedUp,
       role: role,
     );
   }
-
-
 }
