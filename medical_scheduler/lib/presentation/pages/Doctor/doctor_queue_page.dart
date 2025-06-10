@@ -59,13 +59,13 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
                 builder: (context, ref, child) => Completed(
                   completedCount: ref
                       .watch(doctorQueueNotifierProvider)
-                      .completed,
+                      .completed, label: '',
                 ),
               ),
               const SizedBox(height: 20),
               Consumer(
                 builder: (context, ref, child) => Pending(
-                  pendingCount: ref.watch(doctorQueueNotifierProvider).pending,
+                  pendingCount: ref.watch(doctorQueueNotifierProvider).pending, label: '',
                 ),
               ),
               const SizedBox(height: 20),
