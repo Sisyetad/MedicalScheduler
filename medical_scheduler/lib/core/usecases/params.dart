@@ -1,10 +1,10 @@
 // Authentication
 import 'package:medical_scheduler/data/model/RequestModel/diagnosis_request_model.dart';
+import 'package:medical_scheduler/data/model/RequestModel/doctor_request_model.dart';
 import 'package:medical_scheduler/data/model/RequestModel/register_request_model.dart';
 import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/request/login_request.dart';
 import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
-import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
 import 'package:medical_scheduler/domain/entities/request/signup_request.dart';
 
 class LoginParams {
@@ -46,13 +46,13 @@ class UpdateQueueParams {
 }
 
 class CreateReceptionistParams {
-  final ReceptionistRequest receptionistRequest;
+  final EmployeeRequest receptionistRequest;
 
   CreateReceptionistParams({required this.receptionistRequest});
 }
 
 class CreateDoctorParams {
-  final DoctorRequest doctorRequest;
+  final EmployeeRequestModel doctorRequest;
 
   CreateDoctorParams({required this.doctorRequest});
 }

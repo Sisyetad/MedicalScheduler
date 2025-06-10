@@ -59,8 +59,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const AdminDashboardPage(),
       ),
       GoRoute(
-        path: '/add_employee',
-        builder: (context, state) => const AddEmployeePage(),
+        path: '/add_employee/:branchId',
+        builder: (context, state) {
+          final branchId = int.parse(state.pathParameters['branchId']!);
+          return AddEmployeePage(branchId: branchId);
+        },
       ),
       GoRoute(
         path: '/doctor_queue',
