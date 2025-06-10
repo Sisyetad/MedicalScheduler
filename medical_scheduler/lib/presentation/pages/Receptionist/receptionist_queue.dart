@@ -57,7 +57,6 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               Consumer(
                 builder: (context, ref, child) => Completed(
                   completedCount: ref.watch(receptionistQueueNotifierProvider).completed,
-                  label: 'Active Entries',
                 ),
               ),
               const SizedBox(height: 20),
