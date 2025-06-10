@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_add_patient_provider.dart';
 import 'package:medical_scheduler/presentation/events/Receptionist/receptionist_add_patient_events.dart';
-import 'package:medical_scheduler/presentation/Provider/states/Receptionist/receptionist_add_patient_state.dart';
 
 class AddPatientPage extends ConsumerStatefulWidget {
   const AddPatientPage({super.key});
@@ -36,15 +35,17 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      ref.read(receptionistAddPatientNotifierProvider.notifier).onEvent(
-        SubmitPatientForm(
-          fullName: fullName,
-          dateOfBirth: dateOfBirth,
-          email: email,
-          address: address,
-          phoneNumber: phoneNumber,
-        ),
-      );
+      ref
+          .read(receptionistAddPatientNotifierProvider.notifier)
+          .onEvent(
+            SubmitPatientForm(
+              fullName: fullName,
+              dateOfBirth: dateOfBirth,
+              email: email,
+              address: address,
+              phoneNumber: phoneNumber,
+            ),
+          );
     }
   }
 
@@ -61,9 +62,7 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Patient'),
-      ),
+      appBar: AppBar(title: const Text('Add Patient')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -75,35 +74,40 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
               TextFormField(
                 decoration: const InputDecoration(hintText: 'Full Name'),
                 onSaved: (val) => fullName = val ?? '',
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               const Text('Date of Birth'),
               TextFormField(
                 decoration: const InputDecoration(hintText: 'Date of Birth'),
                 onSaved: (val) => dateOfBirth = val ?? '',
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               const Text('Email'),
               TextFormField(
                 decoration: const InputDecoration(hintText: 'Email'),
                 onSaved: (val) => email = val ?? '',
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               const Text('Address'),
               TextFormField(
                 decoration: const InputDecoration(hintText: 'Address'),
                 onSaved: (val) => address = val ?? '',
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 16),
               const Text('Phone Number'),
               TextFormField(
                 decoration: const InputDecoration(hintText: 'Phone Number'),
                 onSaved: (val) => phoneNumber = val ?? '',
-                validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                validator: (val) =>
+                    val == null || val.isEmpty ? 'Required' : null,
               ),
               const SizedBox(height: 24),
               if (state.isLoading)
@@ -111,7 +115,10 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
               if (state.error != null)
                 Text(state.error!, style: const TextStyle(color: Colors.red)),
               if (state.isSuccess)
-                const Text('Patient added successfully!', style: TextStyle(color: Colors.green)),
+                const Text(
+                  'Patient added successfully!',
+                  style: TextStyle(color: Colors.green),
+                ),
               Center(
                 child: ElevatedButton(
                   onPressed: state.isLoading ? null : _submit,
@@ -124,4 +131,4 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
       ),
     );
   }
-} 
+}

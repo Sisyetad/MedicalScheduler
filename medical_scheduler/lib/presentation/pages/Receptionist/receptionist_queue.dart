@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 import 'package:medical_scheduler/presentation/widgets/completed_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/pending_widget.dart';
-import 'package:medical_scheduler/presentation/widgets/doctor_queue_widget.dart';
+import 'package:medical_scheduler/presentation/widgets/receptionist_queue_widget.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_queue_provider.dart';
 import 'package:medical_scheduler/presentation/events/Receptionist/receptionist_queue_events.dart';
+
+// leave import for you
 
 class ReceptionistQueuePage extends ConsumerStatefulWidget {
   const ReceptionistQueuePage({super.key});
@@ -67,13 +69,6 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // REMOVED Resolved widget as per request
-              // Consumer(
-              //   builder: (context, ref, child) => Resolved(
-              //     resolvedCount: ref.watch(receptionistQueueNotifierProvider).resolvedPending,
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: ElevatedButton(
@@ -92,7 +87,7 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               Consumer(
                 builder: (context, ref, _) {
                   final state = ref.watch(receptionistQueueNotifierProvider);
-                  return DoctorQueueWidget(
+                  return ReceptionistQueueWidget( // ✅ Replaced DoctorQueueWidget
                     queues: state.queues,
                   );
                 },
