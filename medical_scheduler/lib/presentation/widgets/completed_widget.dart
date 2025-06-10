@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Completed extends StatelessWidget {
   final int completedCount;
-  const Completed({super.key, required this.completedCount});
+  const Completed({super.key, required this.completedCount, required String label});
 
   @override
   Widget build(BuildContext context) {
