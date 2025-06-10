@@ -7,6 +7,7 @@ class AuthUiState {
   final String email;
   final String password;
   final User? user;
+  final String? name;
 
   AuthUiState({
     this.isLoading = false,
@@ -14,7 +15,8 @@ class AuthUiState {
     this.error,
     this.email = '',
     this.password = '',
-    this.user
+    this.user,
+    this.name
   });
 
   AuthUiState copyWith({
@@ -24,6 +26,7 @@ class AuthUiState {
     String? email,
     String? password,
     User? user,
+    String? name
   }) {
     return AuthUiState(
       isLoading: isLoading ?? this.isLoading,
@@ -31,7 +34,8 @@ class AuthUiState {
       error: error,
       email: email ?? this.email,
       password: password ?? this.password,
-      user: user?? this.user
+      user: user ?? this.user,
+      name: name?? this.name
     );
   }
 }

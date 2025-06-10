@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:medical_scheduler/Application/Usecases/auth/signUp.dart';
 import 'package:medical_scheduler/core/util/session_manager.dart';
 import 'package:medical_scheduler/data/repository/auth_repo_imp.dart';
 import 'package:medical_scheduler/data/source/data_source/authDataSrc.dart';
@@ -43,10 +44,16 @@ final getUserUsecaseProvider = Provider<GetUserUseCase>((ref) {
   return GetUserUseCase(repo);
 });
 
+final signUpUsecaseProvider = Provider<RegisterUseCase>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return RegisterUseCase(repo);
+});
+
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthUiState>(
   (ref) {
     final loginUseCase = ref.watch(loginUseCaseProvider);
     final getUserUseCase = ref.watch(getUserUsecaseProvider);
-    return AuthViewModel(loginUseCase, getUserUseCase);
+    final signUpUsecase = ref.watch(signUpUsecaseProvider);
+    return AuthViewModel(loginUseCase, getUserUseCase, signUpUsecase);
   },
 );
