@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Pending extends StatelessWidget {
   final int pendingCount;
-  const Pending({super.key, required this.pendingCount});
+  const Pending({super.key, required this.pendingCount, required String label});
 
   @override
   Widget build(BuildContext context) {
