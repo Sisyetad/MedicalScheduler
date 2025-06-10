@@ -1,5 +1,5 @@
 // data/repositories/receptionist_repository_impl.dart
-import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
+import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/response/receptionist.dart';
 import 'package:medical_scheduler/data/source/data_source/receptionist_data_src.dart';
 import 'package:medical_scheduler/domain/repository/receptionist_repo.dart';
@@ -20,9 +20,7 @@ class ReceptionistRepositoryImpl implements ReceptionistRepository {
   }
 
   @override
-  Future<Receptionist> createReceptionist(
-    ReceptionistRequest receptionist,
-  ) async {
+  Future<Receptionist> createReceptionist(EmployeeRequest receptionist) async {
     return await dataSource.createReceptionist(receptionist);
   }
 

@@ -22,7 +22,7 @@ class BranchModel extends Branch {
     return BranchModel(
       branchId: json['branch_id'] ?? json['user_id'],
       username: json['username'] ?? json['name'],
-      email: json['email'],
+      email: json['contact_email'] ?? json['email'],
       password: json['password'] ?? "",
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],

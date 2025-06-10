@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:medical_scheduler/data/model/ResponseModel/receptionist_model.dart';
 import 'package:medical_scheduler/data/source/data_source/receptionist_data_src.dart';
-import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
+import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/response/receptionist.dart';
 
 class ReceptionistDataSrcImp implements ReceptionistDataSrc {
@@ -32,9 +32,7 @@ class ReceptionistDataSrcImp implements ReceptionistDataSrc {
   }
 
   @override
-  Future<Receptionist> createReceptionist(
-    ReceptionistRequest receptionist,
-  ) async {
+  Future<Receptionist> createReceptionist(EmployeeRequest receptionist) async {
     try {
       final response = await dio.post(
         '/receptionists',

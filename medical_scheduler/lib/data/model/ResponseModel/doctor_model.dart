@@ -8,7 +8,7 @@ class DoctorModel extends Doctor {
     required super.doctorId,
     required super.username,
     required super.email,
-    required super.password,
+    super.password,
     required super.createdAt,
     required super.updatedAt,
     super.branch,
@@ -19,7 +19,7 @@ class DoctorModel extends Doctor {
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
     return DoctorModel(
       doctorId: json['doctor_id'] ?? json['user_id'],
-      username: json['username'],
+      username: json['username'] ?? json['name'],
       email: json['email'],
       password: json['password'] ?? "",
       createdAt: json['created_at'],
@@ -27,7 +27,7 @@ class DoctorModel extends Doctor {
       branch: json['branch'] != null
           ? BranchModel.fromJson(json['branch']) as Branch
           : null,
-      isSignedUp: json['is_signed_up'] ?? true,
+      isSignedUp: json['is_signed_up'] ?? false,
       specialization: json['specialty'] ?? '',
     );
   }
