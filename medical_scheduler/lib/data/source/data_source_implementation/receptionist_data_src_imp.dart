@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:medical_scheduler/data/model/RequestModel/doctor_request_model.dart';
 import 'package:medical_scheduler/data/model/ResponseModel/receptionist_model.dart';
 import 'package:medical_scheduler/data/source/data_source/receptionist_data_src.dart';
-import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
 import 'package:medical_scheduler/domain/entities/response/receptionist.dart';
 
 class ReceptionistDataSrcImp implements ReceptionistDataSrc {
   final Dio dio;
-
+  final storage = FlutterSecureStorage();
   ReceptionistDataSrcImp(this.dio);
 
   @override
@@ -31,12 +32,20 @@ class ReceptionistDataSrcImp implements ReceptionistDataSrc {
     }
   }
 
+  Future<String?> getToken() async {
+    return await storage.read(key: 'auth_token');
+  }
+
   @override
-  Future<Receptionist> createReceptionist(EmployeeRequest receptionist) async {
+  Future<Receptionist> createReceptionist(
+    EmployeeRequestModel receptionist,
+  ) async {
+    final token = await getToken();
     try {
       final response = await dio.post(
         '/receptionists',
-        data: (receptionist as ReceptionistModel).toJson(),
+        data: receptionist.toJson(),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       if (response.statusCode == 201) {
         return ReceptionistModel.fromJson(response.data);
@@ -54,22 +63,13 @@ class ReceptionistDataSrcImp implements ReceptionistDataSrc {
   Future<void> updateReceptionist(Receptionist receptionist) async {
     try {
       await dio.put(
-        '/receptionists/${receptionist.userId}',
+        '/users/update/${receptionist.userId}',
         data: (receptionist as ReceptionistModel).toJson(),
       );
     } catch (e) {
       throw Exception(
         'Failed to update receptionist with ID ${receptionist.userId}: $e',
       );
-    }
-  }
-
-  @override
-  Future<void> deleteReceptionist(int id) async {
-    try {
-      await dio.delete('/receptionists/$id');
-    } catch (e) {
-      throw Exception('Failed to delete receptionist with ID $id: $e');
     }
   }
 }

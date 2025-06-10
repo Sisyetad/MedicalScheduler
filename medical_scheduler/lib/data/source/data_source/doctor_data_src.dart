@@ -5,5 +5,4 @@ abstract class DoctorDataSrc {
   Future<List<Doctor>> getAllDoctors();
   Future<Doctor> createDoctor(EmployeeRequestModel doctor);
   Future<void> updateDoctor(Doctor doctor);
-  Future<void> deleteDoctor(int id);
 }

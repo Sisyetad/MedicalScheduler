@@ -37,9 +37,9 @@ class UserSrcImp extends UserSrc {
 
   @override
   Future<String> deleteUser(int id) async {
-    final response = await dio.delete('/users/$id');
+    final response = await dio.delete('/users/delete/$id');
 
-    if (response.statusCode == 204) {
+    if (response.statusCode == 204 || response.statusCode == 200) {
       return 'User deleted successfully';
     } else {
       throw Exception(

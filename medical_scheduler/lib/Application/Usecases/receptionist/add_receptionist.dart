@@ -7,6 +7,7 @@ class AddReceptionist extends UseCase<Receptionist, CreateReceptionistParams> {
   final ReceptionistRepository receptionistRepository;
   AddReceptionist(this.receptionistRepository);
 
+  @override
   Future<Receptionist> call(params) {
     return receptionistRepository.createReceptionist(
       params.receptionistRequest,

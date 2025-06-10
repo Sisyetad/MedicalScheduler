@@ -62,13 +62,4 @@ class DoctorDataSourceImpl implements DoctorDataSrc {
       throw Exception('Failed to update doctor with ID ${doctor.userId}: $e');
     }
   }
-
-  @override
-  Future<void> deleteDoctor(int id) async {
-    try {
-      await dio.delete('${ApiUrls.baseURL}/doctors/$id');
-    } catch (e) {
-      throw Exception('Failed to delete doctor with ID $id: $e');
-    }
-  }
 }

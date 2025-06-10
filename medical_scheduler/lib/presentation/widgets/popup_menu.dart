@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PopupMenu extends StatelessWidget {
   const PopupMenu({super.key});
@@ -34,7 +35,8 @@ class PopupMenu extends StatelessWidget {
         },
         child: InkWell(
           splashColor: Colors.white,
-          onTap: () {// Optionally, you can handle tap here for custom behavior
+          onTap: () {
+            context.go('/profile');
           },
           child: CircleAvatar(
             child: Image.asset('assets/images/profile.png'), // Profile image

@@ -54,13 +54,9 @@ class AdminDashboardNotifier extends StateNotifier<AdminDashboardState> {
 
   Future<void> _deleteEmployee(int userId) async {
     try {
-      // No loading state for a smoother UX on delete
       await _deleteUser.call(userId);
-      // Refresh the data from the server to ensure consistency
       await _fetchData();
     } catch (e) {
-      // If deletion fails, you might want to show an error
-      // For now, we'll just log it and the UI won't change
       print("Error deleting user: $e");
     }
   }

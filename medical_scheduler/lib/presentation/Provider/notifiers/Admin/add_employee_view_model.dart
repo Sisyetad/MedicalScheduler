@@ -47,7 +47,6 @@ class AddEmployeeNotifier extends StateNotifier<AddEmployeeState> {
         branchId: event.branchId,
       );
       if (state.selectedRole == 'Doctor') {
-        print('Submitting employee: $request');
         await addDoctorUseCase.call(CreateDoctorParams(doctorRequest: request));
       } else {
         await addReceptionistUseCase(
@@ -56,7 +55,9 @@ class AddEmployeeNotifier extends StateNotifier<AddEmployeeState> {
       }
 
       state = state.copyWith(isLoading: false, isSuccess: true);
+      print(state.isSuccess);
     } catch (e) {
+      print('Error during submission: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

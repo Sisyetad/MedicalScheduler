@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/events/Admin/add_employee_events.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Admin/admin_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
+import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
 
 class AddEmployeePage extends ConsumerStatefulWidget {
   final int branchId;
@@ -57,9 +58,9 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
 
     if (state.isSuccess) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Diagnosis added successfully!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Employee added successfully!')));
         notifier.state = notifier.state.copyWith(isSuccess: false);
 
         context.go('/admin_home');
@@ -67,18 +68,62 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Employee')),
-      body: SingleChildScrollView(
+      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.tertiary),
+      body: Container(
+        color: Colors.lightBlue[50],
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              /// Role Selection
+              const Text(
+                'Add Employee',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              if (state.selectedRole == 'Doctor') ...[
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    hintText: 'Name',
+                    border: UnderlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (state.selectedRole == 'Doctor' &&
+                        (value == null || value.trim().isEmpty)) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  hintText: 'Email',
+                  border: UnderlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter an email';
+                  } else if (!value.contains('@')) {
+                    return 'Invalid email format';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              const Text('Select Role', style: TextStyle(fontSize: 16)),
               DropdownButtonFormField<String>(
                 value: state.selectedRole,
-                decoration: const InputDecoration(labelText: 'Role'),
+                decoration: const InputDecoration(
+                  hintText: 'Select Role',
+                  border: UnderlineInputBorder(),
+                ),
                 items: ['Doctor', 'Receptionist']
                     .map(
                       (role) =>
@@ -92,44 +137,11 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
                   }
                 },
               ),
-              const SizedBox(height: 16),
-
-              /// Name Field (Only for Doctor)
-              if (state.selectedRole == 'Doctor') ...[
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) {
-                    if (state.selectedRole == 'Doctor' &&
-                        (value == null || value.trim().isEmpty)) {
-                      return 'Please enter a name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
-
-              /// Email Field (Always required)
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter an email';
-                  } else if (!value.contains('@')) {
-                    return 'Invalid email format';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 32),
-
-              /// Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  backgroundColor: Colors.blue[700],
                 ),
                 onPressed: state.isLoading
                     ? null
@@ -148,11 +160,12 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
                       },
                 child: state.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Add Employee'),
+                    : const Text(
+                        'Add Employee',
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
               ),
               const SizedBox(height: 20),
-
-              /// Back to Home
               const BackToHome(roleId: 2),
             ],
           ),

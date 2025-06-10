@@ -8,7 +8,7 @@ class ReceptionistModel extends Receptionist {
     required super.receptionistId,
     required super.username,
     required super.email,
-    required super.password,
+    super.password,
     required super.createdAt,
     required super.updatedAt,
     required super.branch,
@@ -18,7 +18,7 @@ class ReceptionistModel extends Receptionist {
   factory ReceptionistModel.fromJson(Map<String, dynamic> json) {
     return ReceptionistModel(
       receptionistId: json['receptionist_id'] ?? json['user_id'],
-      username: json['username'],
+      username: json['username'] ?? json['name'] ?? '',
       email: json['email'],
       password: json['password'],
       createdAt: json['created_at'],

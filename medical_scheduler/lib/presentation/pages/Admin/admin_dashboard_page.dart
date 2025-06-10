@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/events/Admin/admin_dashboard_events.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Admin/admin_provider.dart';
+import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 
@@ -35,7 +36,7 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
             TextButton(
@@ -45,7 +46,7 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
                 ref
                     .read(adminDashboardNotifierProvider.notifier)
                     .onEvent(DeleteEmployee(userId));
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
           ],
@@ -54,160 +55,231 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
     );
   }
 
+  void _filterEmployees(String query) {
+    ref
+        .read(adminDashboardNotifierProvider.notifier)
+        .onEvent(SearchEmployees(query));
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(adminDashboardNotifierProvider);
     final notifier = ref.read(adminDashboardNotifierProvider.notifier);
-
-    // --- 2. GET THE CURRENTLY LOGGED-IN USER ---
     final currentUser = ref.watch(authViewModelProvider.select((s) => s.user));
 
-    return Scaffold(
-      drawer: const SideBar(),
-      appBar: AppBar(
-        title: const Text('Admin Dashboard'),
-        // --- 3. ADD THE ACTIONS TO THE APPBAR ---
-        actions: [
-          if (currentUser != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: InkWell(
-                onTap: () {
-                  // Navigate to the full profile page when tapped
-                  context.go('/profile');
-                },
-                child: CircleAvatar(
-                  // Using a simple icon for the avatar as in the figma
-                  backgroundColor: Colors.white,
-                  // Using a simple icon for the avatar as in the figma
-                  child: Icon(
-                    Icons.person,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            )
-          else
-            const SizedBox.shrink(), // Or a loading indicator
-        ],
-      ),
-      body: state.isLoading && state.allEmployees.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: () => notifier.onEvent(FetchDashboardData()),
-              child: ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  // Stat Cards
-                  Row(
+    return SafeArea(
+      child: Scaffold(
+        drawer: const SideBar(),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
+          actions: const [PopupMenu()],
+        ),
+        body: state.isLoading && state.allEmployees.isEmpty
+            ? const Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: () => notifier.onEvent(FetchDashboardData()),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          title: 'Total Doctors',
-                          count: state.doctorCount,
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Admin Dashboard",
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          title: 'Total Receptionists',
-                          count: state.receptionistCount,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Add Employee Button
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add Employee'),
-                    onPressed: () {
-                      context.go('/add_employee/${currentUser?.userId}');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Search Bar
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Search for Employee ...',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
-                    ),
-                    onChanged: (query) =>
-                        notifier.onEvent(SearchEmployees(query)),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Employee Table
-                  DataTable(
-                    headingRowColor: WidgetStateProperty.all(
-                      // ignore: deprecated_member_use
-                      Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                    ),
-                    columns: const [
-                      DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Role')),
-                      DataColumn(label: Text('Actions')),
-                    ],
-                    rows: state.displayedEmployees.map((user) {
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(user.username)),
-                          DataCell(Text(user.role.name)),
-                          DataCell(
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red.shade700,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () => _showDeleteConfirmation(
-                                user.userId,
-                                user.username,
-                              ),
-                              child: const Text('Delete'),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Consumer(
+                            builder: (context, ref, child) => _buildStatCard(
+                              title: 'Total Doctors',
+                              count: state.doctorCount,
+                              icon: Icons.medical_services,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Consumer(
+                            builder: (context, ref, child) => _buildStatCard(
+                              title: 'Total Receptionists',
+                              count: state.receptionistCount,
+                              icon: Icons.support_agent,
                             ),
                           ),
                         ],
-                      );
-                    }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      SearchBar(
+                        hintText: "Search for Employee ...",
+                        onChanged: _filterEmployees,
+                      ),
+                      const SizedBox(height: 20),
+
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.add),
+                        label: const Text('Add Employee'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            39,
+                            81,
+                            195,
+                          ),
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          context.go('/add_employee/${currentUser?.userId}');
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            headingRowColor:
+                                WidgetStateProperty.resolveWith<Color?>(
+                                  (states) =>
+                                      const Color.fromARGB(255, 43, 95, 145),
+                                ),
+                            headingRowHeight: 40,
+                            dataRowHeight: 120,
+                            columns: const [
+                              DataColumn(
+                                label: Text(
+                                  'Name',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Role',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Text(
+                                  'Actions',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                            rows: state.displayedEmployees.map((user) {
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text(user.username)),
+                                  DataCell(Text(user.role.name)),
+                                  DataCell(
+                                    SizedBox(
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 26,
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  _showDeleteConfirmation(
+                                                    user.userId,
+                                                    user.username,
+                                                  ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(
+                                                  0xFF2B5F91,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(6),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                    ),
+                                                textStyle: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                'Delete',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                            border: TableBorder.all(
+                              color: Colors.grey,
+                              width: 1,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
-  Widget _buildStatCard(
-    BuildContext context, {
+  Widget _buildStatCard({
     required String title,
     required int count,
+    required IconData icon,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: const Color(0xFF2B5F91),
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+          Row(
+            children: [
+              Icon(icon, color: Colors.white, size: 24),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           Text(
             count.toString(),
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 32,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
             ),
           ),
