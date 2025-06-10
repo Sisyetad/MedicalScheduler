@@ -10,12 +10,14 @@ import 'package:medical_scheduler/presentation/pages/Doctor/doctor_queue_page.da
 import 'package:medical_scheduler/presentation/pages/Doctor/patient_history_page.dart';
 import 'package:medical_scheduler/presentation/pages/Auth/profile_page.dart';
 import 'package:medical_scheduler/presentation/pages/Auth/signup_login_page.dart';
+import 'package:medical_scheduler/presentation/pages/Receptionist/receptionist_queue.dart';
+import 'package:medical_scheduler/presentation/pages/Receptionist/add_patient_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final user = ref.watch(authViewModelProvider.select((s) => s.user));
+
   return GoRouter(
     initialLocation: '/',
-    // REMOVE refreshListenable!
     redirect: (context, state) {
       final user = ref.watch(authViewModelProvider.select((s) => s.user));
       final isChecking = ref.watch(
@@ -23,23 +25,20 @@ final routerProvider = Provider<GoRouter>((ref) {
       );
       final loggingIn = state.uri.toString() == '/auth';
 
-      // While checking, stay on splash
       if (isChecking) return null;
 
-      // Not logged in, not on login page? Go to login
       if (user == null && !loggingIn) {
         return '/auth';
       }
 
-      // Logged in, but on login or splash? Go to home
       if (user != null && (loggingIn || state.uri.toString() == '/')) {
         final roleId = user.role.roleId;
         switch (roleId) {
-          case 4:
+          case 4: // Doctor
             return '/doctor_queue';
-          case 5:
-            return '/receptionist_home';
-          case 2:
+          case 5: // Receptionist
+            return '/receptionist/queue';
+          case 2: // Admin
             return '/admin_home';
           default:
             return '/doctor_queue';
@@ -50,10 +49,17 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashPage()),
+
+      /// Auth
       GoRoute(
         path: '/auth',
         builder: (context, state) => const LoginSignUpPage(),
       ),
+
+      /// Profile
+      GoRoute(path: '/profile', builder: (context, state) => const Profile()),
+
+      /// Admin
       GoRoute(
         path: '/admin_home',
         builder: (context, state) => const AdminDashboardPage(),
@@ -65,6 +71,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           return AddEmployeePage(branchId: branchId);
         },
       ),
+
+      /// Doctor
       GoRoute(
         path: '/doctor_queue',
         builder: (context, state) => const DoctorPage(),
@@ -90,7 +98,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           return AddDiagnosisScreen(patientId: patientId);
         },
       ),
-      GoRoute(path: '/profile', builder: (context, state) => const Profile()),
+
+      /// Receptionist
+      GoRoute(
+        path: '/receptionist/queue',
+        builder: (context, state) => const ReceptionistQueuePage(),
+      ),
+      GoRoute(
+        path: '/receptionist/add-patient',
+        builder: (context, state) => const AddPatientPage(),
+      ),
     ],
   );
 });
