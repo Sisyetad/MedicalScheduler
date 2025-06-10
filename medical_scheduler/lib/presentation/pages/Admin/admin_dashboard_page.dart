@@ -5,7 +5,6 @@ import 'package:medical_scheduler/presentation/events/Admin/admin_dashboard_even
 import 'package:medical_scheduler/presentation/Provider/providers/Admin/admin_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
-import 'package:medical_scheduler/presentation/widgets/profile_widget.dart'; // Assuming this is where ProfileWidget is located
 
 class AdminDashboardPage extends ConsumerStatefulWidget {
   const AdminDashboardPage({super.key});
@@ -125,7 +124,9 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
                   ElevatedButton.icon(
                     icon: const Icon(Icons.add),
                     label: const Text('Add Employee'),
-                    onPressed: () => context.go('/add_employee'),
+                    onPressed: () {
+                      context.go('/add_employee/${currentUser?.userId}');
+                    },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),

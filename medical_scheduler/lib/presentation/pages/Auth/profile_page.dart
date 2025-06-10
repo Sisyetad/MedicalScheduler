@@ -38,7 +38,7 @@ class _ProfileState extends ConsumerState<Profile> {
               children: [
                 Container(
                   width: 330,
-                  height: 500,
+                  height: 550,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(154, 240, 255, 255),

@@ -1,55 +1,60 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:medical_scheduler/core/usecases/params.dart';
 import 'package:medical_scheduler/Application/Usecases/doctor/add_doctor.dart';
 import 'package:medical_scheduler/Application/Usecases/receptionist/add_receptionist.dart';
-import 'package:medical_scheduler/domain/entities/request/doctor_request.dart';
-import 'package:medical_scheduler/domain/entities/request/receptionist_request.dart';
-import 'package:medical_scheduler/presentation/events/Admin/add_employee_events.dart';
+import 'package:medical_scheduler/core/usecases/params.dart';
+import 'package:medical_scheduler/data/model/RequestModel/doctor_request_model.dart';
 import 'package:medical_scheduler/presentation/Provider/states/Admin/add_employee_state.dart';
+import 'package:medical_scheduler/presentation/events/Admin/add_employee_events.dart';
 
 class AddEmployeeNotifier extends StateNotifier<AddEmployeeState> {
-  final AddDoctor _addDoctorUseCase;
-  final AddReceptionist _addReceptionistUseCase;
+  final AddDoctor addDoctorUseCase;
+  final AddReceptionist addReceptionistUseCase;
 
-  AddEmployeeNotifier(this._addDoctorUseCase, this._addReceptionistUseCase)
-    : super(AddEmployeeState());
+  AddEmployeeNotifier({
+    required this.addDoctorUseCase,
+    required this.addReceptionistUseCase,
+  }) : super(AddEmployeeState());
 
-  Future<void> onEvent(AddEmployeeEvent event) async {
+  void onEvent(AddEmployeeEvent event) async {
     if (event is EmployeeRoleSelected) {
+      state = state.copyWith(selectedRole: event.role);
+    } else if (event is UpdateEmployeeName) {
       state = state.copyWith(
-        selectedRole: event.role,
-        isSuccess: false,
-        error: null,
+        employeeRequest: state.employeeRequest?.copyWith(username: event.name),
+      );
+    } else if (event is UpdateEmployeeEmail) {
+      state = state.copyWith(
+        employeeRequest: state.employeeRequest?.copyWith(email: event.email),
+      );
+    } else if (event is UpdateEmployeeBranch) {
+      state = state.copyWith(
+        employeeRequest: state.employeeRequest?.copyWith(
+          branchId: event.branchId,
+        ),
       );
     } else if (event is SubmitEmployeeForm) {
-      await _submitForm(event);
+      await _handleSubmit(event);
     }
   }
 
-  Future<void> _submitForm(SubmitEmployeeForm event) async {
-    state = state.copyWith(isLoading: true, error: null, isSuccess: false);
+  Future<void> _handleSubmit(SubmitEmployeeForm event) async {
+    state = state.copyWith(isLoading: true, error: null);
+
     try {
+      final request = EmployeeRequestModel(
+        username: event.name,
+        email: event.email,
+        branchId: event.branchId,
+      );
       if (state.selectedRole == 'Doctor') {
-        if (event.name == null || event.name!.isEmpty) {
-          throw Exception('Doctor name is required.');
-        }
-        final doctorRequest = DoctorRequest(
-          username: event.name!,
-          email: event.email,
-          branchId: event.branchId,
-        );
-        await _addDoctorUseCase.call(
-          CreateDoctorParams(doctorRequest: doctorRequest),
-        );
+        print('Submitting employee: $request');
+        await addDoctorUseCase.call(CreateDoctorParams(doctorRequest: request));
       } else {
-        final receptionistRequest = ReceptionistRequest(
-          email: Stream.value(event.email),
-          branchId: event.branchId,
-        );
-        await _addReceptionistUseCase.call(
-          CreateReceptionistParams(receptionistRequest: receptionistRequest),
+        await addReceptionistUseCase(
+          CreateReceptionistParams(receptionistRequest: request),
         );
       }
+
       state = state.copyWith(isLoading: false, isSuccess: true);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());

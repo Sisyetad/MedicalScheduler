@@ -55,16 +55,18 @@ final deleteUserUseCaseProvider = Provider(
 // --- ViewModels / Notifiers ---
 final adminDashboardNotifierProvider =
     StateNotifierProvider<AdminDashboardNotifier, AdminDashboardState>(
-  (ref) => AdminDashboardNotifier(
-    ref.watch(getAdminDashboardDataProvider),
-    ref.watch(deleteUserUseCaseProvider), // <-- Inject delete use case
-  ),
-);
-
-final addEmployeeNotifierProvider =
-    StateNotifierProvider<AddEmployeeNotifier, AddEmployeeState>(
-      (ref) => AddEmployeeNotifier(
-        ref.watch(addDoctorUseCaseProvider),
-        ref.watch(addReceptionistUseCaseProvider),
+      (ref) => AdminDashboardNotifier(
+        ref.watch(getAdminDashboardDataProvider),
+        ref.watch(deleteUserUseCaseProvider), // <-- Inject delete use case
       ),
     );
+
+final addEmployeeNotifierProvider =
+    StateNotifierProvider<AddEmployeeNotifier, AddEmployeeState>((ref) {
+      final addDoctorUseCase = ref.read(addDoctorUseCaseProvider);
+      final addReceptionistUseCase = ref.read(addReceptionistUseCaseProvider);
+      return AddEmployeeNotifier(
+        addDoctorUseCase: addDoctorUseCase,
+        addReceptionistUseCase: addReceptionistUseCase,
+      );
+    });

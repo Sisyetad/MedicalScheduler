@@ -6,7 +6,9 @@ import 'package:medical_scheduler/presentation/Provider/providers/Admin/admin_pr
 import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
 
 class AddEmployeePage extends ConsumerStatefulWidget {
-  const AddEmployeePage({super.key});
+  final int branchId;
+
+  const AddEmployeePage({super.key, required this.branchId});
 
   @override
   ConsumerState<AddEmployeePage> createState() => _AddEmployeePageState();
@@ -18,6 +20,30 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    // Set initial branchId
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(addEmployeeNotifierProvider.notifier)
+          .onEvent(UpdateEmployeeBranch(widget.branchId));
+    });
+
+    // Listen to text field changes to update state
+    _nameController.addListener(() {
+      ref
+          .read(addEmployeeNotifierProvider.notifier)
+          .onEvent(UpdateEmployeeName(_nameController.text));
+    });
+
+    _emailController.addListener(() {
+      ref
+          .read(addEmployeeNotifierProvider.notifier)
+          .onEvent(UpdateEmployeeEmail(_emailController.text));
+    });
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -26,21 +52,19 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(addEmployeeNotifierProvider, (previous, next) {
-      if (next.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Employee Added Successfully!')),
-        );
-        context.pop();
-      } else if (next.error != null) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: ${next.error}')));
-      }
-    });
-
     final state = ref.watch(addEmployeeNotifierProvider);
     final notifier = ref.read(addEmployeeNotifierProvider.notifier);
+
+    if (state.isSuccess) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Diagnosis added successfully!')),
+        );
+        notifier.state = notifier.state.copyWith(isSuccess: false);
+
+        context.go('/admin_home');
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Add Employee')),
@@ -51,7 +75,7 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Role Dropdown
+              /// Role Selection
               DropdownButtonFormField<String>(
                 value: state.selectedRole,
                 decoration: const InputDecoration(labelText: 'Role'),
@@ -64,40 +88,45 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
                 onChanged: (value) {
                   if (value != null) {
                     notifier.onEvent(EmployeeRoleSelected(value));
+                    _nameController.clear(); // Reset name field
                   }
                 },
               ),
               const SizedBox(height: 16),
 
-              // Name field (only for Doctors)
-              if (state.selectedRole == 'Doctor')
+              /// Name Field (Only for Doctor)
+              if (state.selectedRole == 'Doctor') ...[
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Name'),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (state.selectedRole == 'Doctor' &&
+                        (value == null || value.trim().isEmpty)) {
                       return 'Please enter a name';
                     }
                     return null;
                   },
                 ),
-              if (state.selectedRole == 'Doctor') const SizedBox(height: 16),
+                const SizedBox(height: 16),
+              ],
 
-              // Email field
+              /// Email Field (Always required)
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email';
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter an email';
+                  } else if (!value.contains('@')) {
+                    return 'Invalid email format';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 32),
 
-              // Submit Button
+              /// Submit Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -108,9 +137,11 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
                         if (_formKey.currentState!.validate()) {
                           notifier.onEvent(
                             SubmitEmployeeForm(
-                              name: _nameController.text,
-                              email: _emailController.text,
-                              branchId: 1, // Default branch ID
+                              name: state.selectedRole == 'Doctor'
+                                  ? _nameController.text.trim()
+                                  : "",
+                              email: _emailController.text.trim(),
+                              branchId: widget.branchId,
                             ),
                           );
                         }
@@ -119,11 +150,10 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Add Employee'),
               ),
-
               const SizedBox(height: 20),
 
-              // Back to Home
-              const BackToHome(roleId: 2), // 2 = Admin
+              /// Back to Home
+              const BackToHome(roleId: 2),
             ],
           ),
         ),

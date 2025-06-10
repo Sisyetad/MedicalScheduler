@@ -32,7 +32,7 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
   }
 
   void _handleAddDiagnosis() {
-    context.go('/diagnosis_form/${widget.patientId}');
+    context.go('/diagnosis_form/:${widget.patientId}');
   }
 
   @override
