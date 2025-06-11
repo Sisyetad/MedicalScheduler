@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:medical_scheduler/presentation/widgets/completed_widget.dart';
 void main() {
-  // Helper function to build the widget
   Widget buildTestWidget({required int completedCount}) {
     return MaterialApp(
       home: Scaffold(
@@ -12,10 +11,7 @@ void main() {
   }
 
   testWidgets('Completed displays correct UI elements and styles', (WidgetTester tester) async {
-    // Build the widget with completedCount = 42
     await tester.pumpWidget(buildTestWidget(completedCount: 42));
-
-    // Verify Container properties
     final containerFinder = find.byType(Container);
     expect(containerFinder, findsOneWidget, reason: 'Expected one Container in Completed');
     final container = tester.widget<Container>(containerFinder);
@@ -26,21 +22,18 @@ void main() {
     expect(boxDecoration.color, const Color.fromARGB(255, 43, 95, 145));
     expect(boxDecoration.borderRadius, BorderRadius.circular(20));
 
-    // Verify Wrap widget
     final wrapFinder = find.descendant(
       of: containerFinder,
       matching: find.byType(Wrap),
     );
     expect(wrapFinder, findsOneWidget, reason: 'Expected one Wrap inside Container');
 
-    // Verify three Padding widgets inside Wrap
     final paddingFinders = find.descendant(
       of: wrapFinder,
       matching: find.byType(Padding),
     );
     expect(paddingFinders, findsNWidgets(3), reason: 'Expected three Padding widgets inside Wrap');
 
-    // Verify first Padding (Icon)
     final iconPaddingFinder = paddingFinders.at(0);
     final iconPadding = tester.widget<Padding>(iconPaddingFinder);
     expect(iconPadding.padding, const EdgeInsets.all(8.0));

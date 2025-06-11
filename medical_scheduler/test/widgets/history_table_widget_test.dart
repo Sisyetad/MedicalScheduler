@@ -1,9 +1,5 @@
-// test/widgets/history_table_widget_test.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-// Make sure these import paths are correct for your project structure
 import 'package:medical_scheduler/domain/entities/response/Branch.dart';
 import 'package:medical_scheduler/domain/entities/response/doctor.dart';
 import 'package:medical_scheduler/domain/entities/response/patient.dart';

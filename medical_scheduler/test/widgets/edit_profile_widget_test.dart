@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:medical_scheduler/presentation/widgets/edit_profile_widget.dart';
 
 void main() {
-  // Helper function to build the widget
   Widget buildTestWidget() {
     return MaterialApp(
       home: Scaffold(

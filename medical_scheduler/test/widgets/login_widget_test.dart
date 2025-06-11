@@ -1,4 +1,3 @@
-// test/widgets/login_widget_test.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -17,19 +16,8 @@ import 'package:medical_scheduler/presentation/widgets/dropDown.dart';
 import 'package:medical_scheduler/presentation/widgets/login_widget.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
 import 'login_widget_test.mocks.dart';
 
-// =======================================================================
-// THE MAIN FIX: Create a "Fake" ViewModel for testing.
-// This class is a REAL StateNotifier, so Riverpod can work with it.
-// It implements the AuthViewModel so it can be used as a substitute.
-// =======================================================================
-// =======================================================================
-// THE DEFINITIVE FIX:
-// A Fake ViewModel that correctly extends StateNotifier and implements
-// the AuthViewModel interface WITHOUT using noSuchMethod.
-// =======================================================================
 class FakeAuthViewModel extends StateNotifier<AuthUiState> implements AuthViewModel {
   // 1. Call the super constructor with an initial state.
   FakeAuthViewModel() : super(AuthUiState());
@@ -230,12 +218,9 @@ void main() {
         updatedAt: 'date',
       );
 
-      // Update state via the fake view model
       fakeAuthViewModel.setState(AuthUiState(user: patientUser));
-      // Pump to trigger reaction
       await tester.pump();
 
-      // Verify navigation to the patient's route
       verify(mockGoRouter.go('/patient_dashboard')).called(1);
     });
   });

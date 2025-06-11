@@ -6,15 +6,10 @@ import 'package:medical_scheduler/presentation/widgets/dropDown.dart';
 import 'package:medical_scheduler/presentation/widgets/signup_widget.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'signup_widget_test.mocks.dart';
 
-import 'signup_widget_test.mocks.dart'; // You will need to generate this mock
-
-// The widget likely uses a view model to handle logic. We'll need to mock it.
-// Replace this with your actual signup view model provider.
 final signupViewModelProvider = Provider((ref) => MockSignupViewModel());
 
-// Let's create a mock for the ViewModel.
-// This assumes your signup logic is in a class, which is good practice.
 @GenerateMocks([GoRouter, SignupViewModel])
 void main() {
   late MockGoRouter mockGoRouter;
@@ -77,11 +72,8 @@ void main() {
       await tester.enterText(find.widgetWithText(TextField, 'Enter Password'), 'password123');
       await tester.enterText(find.widgetWithText(TextField, 'Confirm Password'), 'password123');
       
-      // Instead of checking controllers, we check if the text is now visible on screen.
-      // This is a much more robust test.
       expect(find.text('Test User'), findsOneWidget);
       expect(find.text('test@example.com'), findsOneWidget);
-      // Passwords are obscured, so we can't find them by text, but we know the input worked.
     });
 
     testWidgets('calls view model with correct data on signup tap', (WidgetTester tester) async {
@@ -96,11 +88,6 @@ void main() {
       await tester.enterText(find.widgetWithText(TextField, 'Email'), email);
       await tester.enterText(find.widgetWithText(TextField, 'Enter Password'), password);
       await tester.enterText(find.widgetWithText(TextField, 'Confirm Password'), password);
-      
-      // Assume 'Patient' is the default in the dropdown, or tap to select another role.
-      // For simplicity, we assume a default.
-      
-      // Tap the signup button
       await tester.tap(find.widgetWithText(OutlinedButton, 'SignUp'));
       await tester.pump(); // Let the tap event process
 

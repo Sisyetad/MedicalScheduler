@@ -1,5 +1,3 @@
-// test/widgets/profile_widget_test.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:medical_scheduler/domain/entities/response/role.dart';
