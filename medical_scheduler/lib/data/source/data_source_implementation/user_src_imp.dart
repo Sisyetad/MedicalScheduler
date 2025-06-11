@@ -24,10 +24,14 @@ class UserSrcImp extends UserSrc {
 
   @override
   Future<UserModel> updateUser(int userId, RegisterRequestModel user) async {
-    final response = await dio.put('/users/$userId', data: user.toJson());
+    final response = await dio.put(
+      '/users/update/$userId',
+      data: user.toJson(),
+    );
 
     if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data);
+      print(response.data);
+      return UserModel.fromJson(response.data["updatedUser"]);
     } else {
       throw Exception(
         'Failed to update user: ${response.statusCode} - ${response.statusMessage}',

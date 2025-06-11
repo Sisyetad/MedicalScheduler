@@ -1,5 +1,3 @@
-import 'package:medical_scheduler/domain/entities/response/user.dart';
-
 class EditProfileUiState {
   final bool isLoading;
   final bool isSuccess;
@@ -11,8 +9,6 @@ class EditProfileUiState {
   final String newPassword;
   final String confirmPassword;
 
-  final User? user;
-
   EditProfileUiState({
     this.isLoading = false,
     this.isSuccess = false,
@@ -22,7 +18,6 @@ class EditProfileUiState {
     this.currentPassword = '',
     this.newPassword = '',
     this.confirmPassword = '',
-    this.user,
   });
 
   EditProfileUiState copyWith({
@@ -34,7 +29,6 @@ class EditProfileUiState {
     String? currentPassword,
     String? newPassword,
     String? confirmPassword,
-    User? user,
   }) {
     return EditProfileUiState(
       isLoading: isLoading ?? this.isLoading,
@@ -45,7 +39,6 @@ class EditProfileUiState {
       currentPassword: currentPassword ?? this.currentPassword,
       newPassword: newPassword ?? this.newPassword,
       confirmPassword: confirmPassword ?? this.confirmPassword,
-      user: user ?? this.user,
     );
   }
 }

@@ -9,10 +9,9 @@ class RegisterRequestModel extends SignupRequest {
   });
 
   Map<String, dynamic> toJson() => {
-    'name': name,
+    'username': name,
     'email': email,
     'password': password,
-    'role': role,
   };
 }
 

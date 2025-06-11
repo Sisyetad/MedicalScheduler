@@ -16,13 +16,11 @@ class Profile extends ConsumerStatefulWidget {
 
 class _ProfileState extends ConsumerState<Profile> {
   bool isProfile = true;
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(authViewModelProvider);
 
     final user = state.user;
-
     return SafeArea(
       child: Scaffold(
         drawer: const SideBar(),

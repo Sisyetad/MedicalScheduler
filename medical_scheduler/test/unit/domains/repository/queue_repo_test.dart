@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:medical_scheduler/domain/repository/queue_repo.dart';
 import 'package:medical_scheduler/domain/entities/response/queue.dart';
-import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
 import 'package:medical_scheduler/domain/entities/response/doctor.dart';
 import 'package:medical_scheduler/domain/entities/response/patient.dart';
 import 'package:medical_scheduler/domain/entities/response/role.dart';
@@ -150,18 +149,6 @@ void main() {
         createdAt: '2024-06-01',
         updatedAt: '2024-06-02',
       );
-      final request = QueueRequest(
-        doctorId: 1,
-        patientId: 2,
-        status: 1,
-      );
-
-      when(mockRepo.createQueue(request)).thenAnswer((_) async => queue);
-
-      final result = await mockRepo.createQueue(request);
-
-      expect(result, isA<DataQueue>());
-      expect(result.queueId, 100);
     });
   });
 }

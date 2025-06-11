@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
+import 'package:intl/intl.dart';
 
 class GreenBook extends StatelessWidget {
   final DiagnosisHistory diagnosis;
 
   const GreenBook({super.key, required this.diagnosis});
+
+  String normalizeDateForUI(
+    String? dateString, {
+    String format = 'MM/dd/yyyy',
+  }) {
+    if (dateString == null || dateString.isEmpty) {
+      return 'N/A';
+    }
+
+    try {
+      final dateTime = DateTime.parse(dateString).toLocal();
+      final formatter = DateFormat(format);
+      return formatter.format(dateTime);
+    } catch (e) {
+      print('Error parsing date: $e');
+      return 'Invalid Date';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +45,7 @@ class GreenBook extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              "Date: ${diagnosis.createdTime}",
+              "Date: ${normalizeDateForUI(diagnosis.createdTime)}",
               style: const TextStyle(color: Colors.white, fontSize: 15),
             ),
             const SizedBox(height: 8),

@@ -3,15 +3,17 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:medical_scheduler/Application/Usecases/profile/update_profile.dart';
 import 'package:medical_scheduler/Application/Usecases/profile/user_profile.dart';
 import 'package:medical_scheduler/core/usecases/params.dart';
+import 'package:medical_scheduler/data/model/RequestModel/register_request_model.dart';
 import 'package:medical_scheduler/presentation/Provider/states/Auth/edit_profile_ui_state.dart';
 import 'package:medical_scheduler/presentation/events/Auth/profile_edit_event.dart';
+
 class EditProfileViewModel extends StateNotifier<EditProfileUiState> {
   final UpdateProfile updateProfileUseCase;
   final GetUserUseCase getUserUseCase;
   final storage = FlutterSecureStorage();
 
   EditProfileViewModel(this.updateProfileUseCase, this.getUserUseCase)
-      : super(EditProfileUiState());
+    : super(EditProfileUiState());
 
   void onEvent(ProfileEditEvent event) {
     if (event is UpdateUserName) {
@@ -19,11 +21,17 @@ class EditProfileViewModel extends StateNotifier<EditProfileUiState> {
     } else if (event is UpdateEmail) {
       state = state.copyWith(email: event.email, error: null);
     } else if (event is UpdateCurrentPassword) {
-      state = state.copyWith(currentPassword: event.currentPassword, error: null);
+      state = state.copyWith(
+        currentPassword: event.currentPassword,
+        error: null,
+      );
     } else if (event is UpdateNewPassword) {
       state = state.copyWith(newPassword: event.newPassword, error: null);
     } else if (event is UpdateConfirmPassword) {
-      state = state.copyWith(confirmPassword: event.confirmPassword, error: null);
+      state = state.copyWith(
+        confirmPassword: event.confirmPassword,
+        error: null,
+      );
     } else if (event is SubmitProfileUpdate) {
       _submitProfileUpdate(
         username: event.username,
@@ -47,20 +55,19 @@ class EditProfileViewModel extends StateNotifier<EditProfileUiState> {
     try {
       final token = await storage.read(key: 'auth_token');
       if (token == null) throw Exception("User not logged in");
-
-      final request = UpdateProfileRequest(
-        username: username,
+      final user = await getUserUseCase.call(token);
+      final request = RegisterRequestModel(
+        name: username,
         email: email,
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-        confirmPassword: confirmPassword,
+        password: newPassword,
+        role: user.role,
       );
 
-      await updateProfileUseCase.call(UpdateUserParams());
+      await updateProfileUseCase.call(
+        UpdateUserParams(userId: user.userId, user: request),
+      );
 
-      final user = await getUserUseCase.call(token);
-
-      state = state.copyWith(isLoading: false, isSuccess: true, user: user);
+      state = state.copyWith(isLoading: false, isSuccess: true);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -75,8 +82,7 @@ class EditProfileViewModel extends StateNotifier<EditProfileUiState> {
       final user = await getUserUseCase.call(token);
       state = state.copyWith(
         isLoading: false,
-        user: user,
-        username: user.name,
+        username: user.username,
         email: user.email,
       );
     } catch (e) {

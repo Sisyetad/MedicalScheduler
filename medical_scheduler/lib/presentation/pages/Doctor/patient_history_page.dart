@@ -47,41 +47,33 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          key: const Key('patient_history_appbar'),
-          backgroundColor: Theme.of(context).colorScheme.tertiary,
-        ),
+        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.tertiary),
         body: state.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  key: Key('patient_history_loading'),
-                ),
-              )
+            ? const Center(child: CircularProgressIndicator())
             : state.error != null
             ? Center(
                 child: Text(
                   'Error: ${state.error}',
-                  key: const Key('patient_history_error'),
                   style: const TextStyle(color: Colors.red),
                 ),
               )
             : SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "Patient History",
-                        key: Key('patient_history_title'),
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
 
                     if (state.patient != null)
                       Container(
-                        key: const Key('patient_history_info_card'),
                         width: 308,
                         height: 193,
                         decoration: BoxDecoration(
@@ -138,16 +130,13 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
                     const SizedBox(height: 20),
 
                     Consumer(
-                      builder: (context, ref, child) => Completed(
-                        key: const Key('patient_history_completed_count'),
-                        completedCount: state.diagnosisList.length,
-                      ),
+                      builder: (context, ref, child) =>
+                          Completed(completedCount: state.diagnosisList.length),
                     ),
 
                     const SizedBox(height: 20),
 
                     ElevatedButton(
-                      key: const Key('patient_history_add_diagnosis_button'),
                       onPressed: () => _handleAddDiagnosis(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 39, 81, 195),
@@ -159,7 +148,6 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
                     const SizedBox(height: 20),
 
                     SearchBar(
-                      key: const Key('patient_history_search_bar'),
                       hintText: 'Search for Diagnosis...',
                       onChanged: _filterQueues,
                     ),
@@ -167,14 +155,13 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
                     const SizedBox(height: 20),
 
                     HistoryTableWidget(
-                      key: const Key('patient_history_table_widget'),
                       diagnosisList: state.diagnosisList,
                       onViewDetails: _handleViewDetails,
                     ),
 
                     const SizedBox(height: 30),
 
-                    const BackToHome(roleId: 4),
+                    BackToHome(roleId: 4),
                   ],
                 ),
               ),

@@ -83,8 +83,6 @@ void main() {
         registeredby: 1,
       );
 
-      when(mockRepo.createPatient(requestModel)).thenAnswer((_) async {});
-
       await mockRepo.createPatient(requestModel);
 
       verify(mockRepo.createPatient(requestModel)).called(1);

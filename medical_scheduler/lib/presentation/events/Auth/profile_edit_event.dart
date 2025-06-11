@@ -33,7 +33,6 @@ class SubmitProfileUpdate extends ProfileEditEvent {
   final String currentPassword;
   final String newPassword;
   final String confirmPassword;
-  final BuildContext context;
 
   SubmitProfileUpdate({
     required this.username,
@@ -41,6 +40,5 @@ class SubmitProfileUpdate extends ProfileEditEvent {
     required this.currentPassword,
     required this.newPassword,
     required this.confirmPassword,
-    required this.context,
   });
 }

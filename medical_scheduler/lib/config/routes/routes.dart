@@ -58,6 +58,10 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       /// Profile
       GoRoute(path: '/profile', builder: (context, state) => const Profile()),
+      GoRoute(
+        path: '/edit_profile',
+        builder: (context, state) => const Profile(),
+      ),
 
       /// Admin
       GoRoute(

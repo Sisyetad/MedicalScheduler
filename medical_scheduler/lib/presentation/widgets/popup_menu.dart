@@ -14,7 +14,7 @@ class PopupMenu extends StatelessWidget {
           if (value == 'view') {
             context.go('/profile');
           } else if (value == 'edit') {
-            context.go('/profile/edit'); // Example route for editing
+            context.go('/edit_profile'); // Example route for editing
           }
         },
         itemBuilder: (BuildContext context) {
