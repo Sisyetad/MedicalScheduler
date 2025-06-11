@@ -11,7 +11,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'back_to_home_test.mocks.dart';
-import 'login_widget_test.mocks.dart' hide MockGoRouter;
+import 'sidebar_widget_test.mocks.dart' hide MockGoRouter;
 
 // Generate mocks for the dependencies
 @GenerateMocks([GoRouter, AuthViewModel])
