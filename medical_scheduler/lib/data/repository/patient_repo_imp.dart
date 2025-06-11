@@ -21,8 +21,8 @@ class PatientRepositoryImpl implements PatientRepository {
   }
 
   @override
-  Future<void> createPatient(PatientRequestModel patient) async {
-    await dataSource.createPatient(patient);
+  Future<PatientModel> createPatient(PatientRequestModel patient) async {
+    return await dataSource.createPatient(patient);
   }
 
   @override

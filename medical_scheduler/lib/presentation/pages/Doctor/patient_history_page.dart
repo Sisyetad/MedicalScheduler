@@ -27,12 +27,18 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
     });
   }
 
+  void _filterQueues(String query) {
+    ref
+        .read(patientHistoryNotifierProvider.notifier)
+        .handleEvent(FilterPatientHistryQueues(query));
+  }
+
   void _handleViewDetails(int diagnosisId) {
     context.go('/diagnosis_detail/$diagnosisId');
   }
 
   void _handleAddDiagnosis() {
-    context.go('/diagnosis_form/:${widget.patientId}');
+    context.go('/diagnosis_form/${widget.patientId}');
   }
 
   @override
@@ -139,7 +145,10 @@ class _PatientHistoryState extends ConsumerState<PatientHistoryPage> {
 
                     const SizedBox(height: 20),
 
-                    const SearchBar(hintText: 'Search for Diagnosis...'),
+                    SearchBar(
+                      hintText: 'Search for Diagnosis...',
+                      onChanged: _filterQueues,
+                    ),
 
                     const SizedBox(height: 20),
 

@@ -9,7 +9,7 @@ class ReceptionistQueueNotifier extends StateNotifier<QueueUiState> {
   final UpdateQueue updateQueueUseCase;
   final GetAllQueues getAllQueues;
   ReceptionistQueueNotifier(this.updateQueueUseCase, this.getAllQueues)
-      : super(QueueUiState());
+    : super(QueueUiState());
 
   Future<void> mapEventToState(ReceptionistQueueEvent event) async {
     if (event is FetchReceptionistQueues) {
@@ -24,7 +24,8 @@ class ReceptionistQueueNotifier extends StateNotifier<QueueUiState> {
   Future<void> _fetchQueues() async {
     try {
       state = state.copyWith(isLoading: true, error: null);
-      final queues = await getAllQueues();
+      final result = await getAllQueues();
+      final queues = result.where((q) => q.status != 3).toList();
       final completed = queues.where((q) => q.status == 3).length;
       final pending = queues.where((q) => q.status == 1).length;
       final resolvedPending = queues.where((q) => q.status == 2).length;
@@ -97,4 +98,4 @@ class ReceptionistQueueNotifier extends StateNotifier<QueueUiState> {
     }).toList();
     state = state.copyWith(queues: filteredQueues);
   }
-} 
+}

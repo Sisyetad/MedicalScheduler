@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:medical_scheduler/Application/Usecases/queue/add_queue.dart';
 import 'package:medical_scheduler/core/network/dio_client.dart';
 import 'package:medical_scheduler/core/util/session_manager.dart';
 import 'package:medical_scheduler/data/repository/queue_repo_impl.dart';

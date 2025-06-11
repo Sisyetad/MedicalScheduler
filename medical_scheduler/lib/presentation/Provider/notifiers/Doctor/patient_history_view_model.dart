@@ -20,6 +20,8 @@ class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
       // Handle navigation in your UI layer using routing
     } else if (event is NavigateToAddDiagnosis) {
       // Handle navigation in your UI layer using routing
+    } else if (event is FilterPatientHistryQueues) {
+      await filterQueues(event.query);
     }
   }
 
@@ -44,5 +46,16 @@ class PatientHistoryNotifier extends StateNotifier<PatienthistoryUiState> {
     } catch (e) {
       state = state.copywith(isLoading: false, error: e.toString());
     }
+  }
+
+  Future<void> filterQueues(String query) async {
+    if (query.isEmpty) {
+      await _fetchPatientHistory(state.patient?.patientId ?? 0);
+      return;
+    }
+    final filteredQueues = state.diagnosisList.where((queue) {
+      return queue.diagnosisName.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+    state = state.copywith(diagnosisList: filteredQueues);
   }
 }

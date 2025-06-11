@@ -1,3 +1,5 @@
+import 'package:medical_scheduler/data/model/RequestModel/queue_request_model.dart';
+
 abstract class AddPatientEvent {}
 
 class SubmitPatientForm extends AddPatientEvent {

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
+import 'package:medical_scheduler/presentation/widgets/resolved_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
-import 'package:medical_scheduler/presentation/widgets/completed_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/pending_widget.dart';
 import 'package:medical_scheduler/presentation/widgets/receptionist_queue_widget.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_queue_provider.dart';
@@ -37,13 +37,6 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
         .mapEventToState(FilterReceptionistQueues(query));
   }
 
-  // ignore: unused_element
-  void _updateQueueStatus(int queueId, int status) {
-    ref
-        .read(receptionistQueueNotifierProvider.notifier)
-        .mapEventToState(UpdateReceptionistQueueStatus(queueId, status));
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(authViewModelProvider.select((s) => s.user));
@@ -67,10 +60,10 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               ),
               const SizedBox(height: 20),
               Consumer(
-                builder: (context, ref, child) => Completed(
-                  completedCount: ref
+                builder: (context, ref, child) => Resolved(
+                  resolvedCount: ref
                       .watch(receptionistQueueNotifierProvider)
-                      .completed,
+                      .resolvedPending,
                 ),
               ),
               const SizedBox(height: 20),
@@ -79,7 +72,6 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
                   pendingCount: ref
                       .watch(receptionistQueueNotifierProvider)
                       .pending,
-                  label: 'Pending Entries',
                 ),
               ),
               const SizedBox(height: 20),
@@ -91,6 +83,10 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
                       '/receptionist/add-patient/${currentUser?.userId}',
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 39, 81, 195),
+                    foregroundColor: Colors.white,
+                  ),
                   child: const Text('Add patient'),
                 ),
               ),
@@ -105,10 +101,7 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               Consumer(
                 builder: (context, ref, _) {
                   final state = ref.watch(receptionistQueueNotifierProvider);
-                  return ReceptionistQueueWidget(
-                    // ✅ Replaced DoctorQueueWidget
-                    queues: state.queues,
-                  );
+                  return ReceptionistQueueWidget(queues: state.queues);
                 },
               ),
             ],

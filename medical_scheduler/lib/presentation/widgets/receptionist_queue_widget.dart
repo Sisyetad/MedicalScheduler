@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/domain/entities/response/queue.dart';
-import 'package:medical_scheduler/presentation/Provider/providers/Doctor/queue_provider.dart';
-import 'package:medical_scheduler/presentation/events/Doctor/doctor_queue_events.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_queue_provider.dart';
+import 'package:medical_scheduler/presentation/events/Receptionist/receptionist_queue_events.dart';
 
 class ReceptionistQueueWidget extends StatelessWidget {
   final List<DataQueue> queues;
@@ -39,9 +39,9 @@ class ReceptionistQueueWidget extends StatelessWidget {
                   height: 30,
                   child: ElevatedButton(
                     onPressed: () => ref
-                        .read(doctorQueueNotifierProvider.notifier)
+                        .read(receptionistQueueNotifierProvider.notifier)
                         .mapEventToState(
-                          UpdateQueueStatus(
+                          UpdateReceptionistQueueStatus(
                             queue.queueId,
                             queue.status == 1 ? 2 : 1,
                           ),
@@ -54,9 +54,9 @@ class ReceptionistQueueWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       textStyle: const TextStyle(fontSize: 12),
                     ),
-                    child: const Text(
-                      'Resolve',
-                      style: TextStyle(color: Colors.white),
+                    child: Text(
+                      queue.status == 1 ? 'Resolve' : 'Pend',
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -72,7 +72,7 @@ class ReceptionistQueueWidget extends StatelessWidget {
   String _statusText(int status) {
     switch (status) {
       case 1:
-        return 'Not Pending';
+        return 'Pending';
       case 2:
         return 'Resolved';
       case 3:

@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medical_scheduler/Application/Usecases/patient/add_patient.dart';
+import 'package:medical_scheduler/Application/Usecases/queue/add_queue.dart';
 import 'package:medical_scheduler/domain/repository/patient_repo.dart';
 import 'package:medical_scheduler/presentation/Provider/notifiers/Receptionist/receptionist_add_patient_notifier.dart';
+import 'package:medical_scheduler/presentation/Provider/providers/Doctor/queue_provider.dart';
 import 'package:medical_scheduler/presentation/Provider/states/Receptionist/receptionist_add_patient_state.dart';
 import 'package:medical_scheduler/data/repository/patient_repo_imp.dart';
 import 'package:medical_scheduler/data/source/data_source/patient_data_src.dart';
@@ -37,7 +39,20 @@ final createPatientUseCaseProvider = Provider<CreatePatient>((ref) {
   return CreatePatient(repo);
 });
 
-final receptionistAddPatientNotifierProvider = StateNotifierProvider<ReceptionistAddPatientNotifier, ReceptionistAddPatientState>((ref) {
-  final createPatientUseCase = ref.watch(createPatientUseCaseProvider);
-  return ReceptionistAddPatientNotifier(createPatientUseCase);
-}); 
+final createQueueUsecaseProvider = Provider<CreateQueue>((ref) {
+  final repo = ref.watch(queueRepoProvider);
+  return CreateQueue(repo);
+});
+
+final receptionistAddPatientNotifierProvider =
+    StateNotifierProvider<
+      ReceptionistAddPatientNotifier,
+      ReceptionistAddPatientState
+    >((ref) {
+      final createPatientUseCase = ref.watch(createPatientUseCaseProvider);
+      final createQueueUseCase = ref.watch(createQueueUsecaseProvider);
+      return ReceptionistAddPatientNotifier(
+        createPatientUseCase,
+        createQueueUseCase,
+      );
+    });

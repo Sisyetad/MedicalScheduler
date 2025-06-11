@@ -103,10 +103,7 @@ class DoctorQueueNotifier extends StateNotifier<QueueUiState> {
     }
 
     final filteredQueues = state.queues.where((queue) {
-      return queue.patient.username.toLowerCase().contains(
-            query.toLowerCase(),
-          ) ||
-          queue.queueId.toString().contains(query);
+      return queue.patient.username.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     state = state.copyWith(queues: filteredQueues);

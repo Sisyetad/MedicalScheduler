@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_add_patient_provider.dart';
 import 'package:medical_scheduler/presentation/Provider/states/Receptionist/receptionist_add_patient_state.dart';
 import 'package:medical_scheduler/presentation/events/Receptionist/receptionist_add_patient_events.dart';
+import 'package:medical_scheduler/presentation/widgets/back_to_home.dart';
 
 class AddPatientPage extends ConsumerStatefulWidget {
   final int receptionistId;
@@ -177,9 +178,14 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: state.isLoading ? null : _submit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 39, 81, 195),
+                    foregroundColor: Colors.white,
+                  ),
                   child: const Text('Add patient'),
                 ),
               ),
+              Center(child: const BackToHome(roleId: 5)),
             ],
           ),
         ),

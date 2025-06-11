@@ -32,9 +32,14 @@ class PatientDataSourceImpl implements PatientDataSrc {
   }
 
   @override
-  Future<void> createPatient(PatientRequestModel patient) async {
+  Future<PatientModel> createPatient(PatientRequestModel patient) async {
     try {
-      await dio.post('/patients', data: patient.toJson());
+      final response = await dio.post('/patients', data: patient.toJson());
+      if (response.statusCode == 201) {
+        return PatientModel.fromJson(response.data);
+      } else {
+        throw Exception('Failed to create patient: ${response.statusMessage}');
+      }
     } catch (e) {
       throw Exception('Failed to create patient: $e');
     }

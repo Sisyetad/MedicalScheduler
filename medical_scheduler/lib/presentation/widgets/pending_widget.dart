@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class Pending extends StatelessWidget {
   final int pendingCount;
-  const Pending({super.key, required this.pendingCount, required String label});
+  const Pending({super.key, required this.pendingCount});
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 100,
       width: 308,
@@ -27,7 +26,10 @@ class Pending extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text("$pendingCount", style: const TextStyle(fontSize: 30)),
+              child: Text(
+                "$pendingCount",
+                style: const TextStyle(fontSize: 30),
+              ),
             ),
           ),
         ],

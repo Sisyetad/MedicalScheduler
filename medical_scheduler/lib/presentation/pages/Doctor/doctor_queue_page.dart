@@ -66,7 +66,6 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
               Consumer(
                 builder: (context, ref, child) => Pending(
                   pendingCount: ref.watch(doctorQueueNotifierProvider).pending,
-                  label: '',
                 ),
               ),
               const SizedBox(height: 20),

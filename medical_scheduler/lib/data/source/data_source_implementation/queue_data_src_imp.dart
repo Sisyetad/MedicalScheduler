@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:medical_scheduler/data/model/RequestModel/queue_request_model.dart';
 import 'package:medical_scheduler/data/model/ResponseModel/queue_model.dart';
 import 'package:medical_scheduler/data/source/data_source/queue_data_src.dart';
-import 'package:medical_scheduler/domain/entities/request/queue_request.dart';
 
 class QueueDataSourceImpl implements QueueDataSrc {
   final Dio dio;
@@ -32,12 +31,9 @@ class QueueDataSourceImpl implements QueueDataSrc {
   }
 
   @override
-  Future<DataQueueModel> createQueue(QueueRequest queue) async {
+  Future<DataQueueModel> createQueue(QueueRequestModel queue) async {
     try {
-      final response = await dio.post(
-        '/queues',
-        data: (queue as QueueRequestModel).toJson(),
-      );
+      final response = await dio.post('/queues', data: queue.toJson());
       if (response.statusCode == 201) {
         return DataQueueModel.fromJson(response.data);
       } else {

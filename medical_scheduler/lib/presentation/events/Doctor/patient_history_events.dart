@@ -11,3 +11,8 @@ class NavigateToDiagnosisDetails extends PatientHistoryEvent {
 }
 
 class NavigateToAddDiagnosis extends PatientHistoryEvent {}
+
+class FilterPatientHistryQueues extends PatientHistoryEvent {
+  final String query;
+  FilterPatientHistryQueues(this.query);
+}
