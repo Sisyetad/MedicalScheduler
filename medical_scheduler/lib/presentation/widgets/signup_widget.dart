@@ -70,99 +70,102 @@ class _BuildsignupState extends ConsumerState<SignupWidget> {
     final authViewModel = ref.read(authViewModelProvider.notifier);
     final selectedRole = ref.watch(roleProvider);
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-          child: TextField(
-            controller: controllerName,
-            decoration: const InputDecoration(labelText: 'Name'),
-          ),
-        ),
-        RoleDropdown(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-          child: TextField(
-            controller: controllerEmail,
-            decoration: const InputDecoration(labelText: 'Email'),
-            keyboardType: TextInputType.emailAddress,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-          child: TextField(
-            controller: controllerPw,
-            decoration: const InputDecoration(labelText: 'Enter Password'),
-            obscureText: true,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-          child: TextField(
-            controller: controllerCP,
-            decoration: InputDecoration(
-              labelText: 'Confirm Password',
-              errorText: _passwordError,
-            ),
-            obscureText: true,
-          ),
-        ),
-        if (error != null)
+    return SingleChildScrollView(
+      child: Column(
+        children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(error, style: const TextStyle(color: Colors.red)),
-          ),
-        const SizedBox(height: 20),
-        Center(
-          child: OutlinedButton(
-            onPressed: isLoading
-                ? null
-                : () {
-                    // Validate inputs
-                    if (controllerName.text.isEmpty ||
-                        controllerEmail.text.isEmpty ||
-                        controllerPw.text.isEmpty ||
-                        controllerCP.text.isEmpty ||
-                        selectedRole == null) {
-                      setState(() {
-                        _passwordError = 'Please fill all fields';
-                      });
-                      return;
-                    }
-                    if (controllerPw.text != controllerCP.text) {
-                      setState(() {
-                        _passwordError = 'Passwords do not match';
-                      });
-                      return;
-                    }
-                    setState(() {
-                      _passwordError = null;
-                    });
-                    authViewModel.onEvent(
-                      SubmitSignup(
-                        username: controllerName.text,
-                        email: controllerEmail.text,
-                        password: controllerPw.text,
-                        role: selectedRole,
-                      ),
-                    );
-                  },
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              backgroundColor: const Color.fromARGB(255, 39, 81, 195),
-              disabledBackgroundColor: Colors.grey,
-            ),
-            child: const Center(
-              child: Text(
-                "SignUp",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: TextField(
+              controller: controllerName,
+              decoration: const InputDecoration(labelText: 'Name'),
             ),
           ),
-        ),
-      ],
+          RoleDropdown(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: TextField(
+              controller: controllerEmail,
+              decoration: const InputDecoration(labelText: 'Email'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: TextField(
+              controller: controllerPw,
+              decoration: const InputDecoration(labelText: 'Enter Password'),
+              obscureText: true,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: TextField(
+              controller: controllerCP,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                errorText: _passwordError,
+              ),
+              obscureText: true,
+            ),
+          ),
+          if (error != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(error, style: const TextStyle(color: Colors.red)),
+            ),
+          const SizedBox(height: 20),
+          Center(
+            child: OutlinedButton(
+              key: const Key('signup_button'),
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // Validate inputs
+                      if (controllerName.text.isEmpty ||
+                          controllerEmail.text.isEmpty ||
+                          controllerPw.text.isEmpty ||
+                          controllerCP.text.isEmpty ||
+                          selectedRole == null) {
+                        setState(() {
+                          _passwordError = 'Please fill all fields';
+                        });
+                        return;
+                      }
+                      if (controllerPw.text != controllerCP.text) {
+                        setState(() {
+                          _passwordError = 'Passwords do not match';
+                        });
+                        return;
+                      }
+                      setState(() {
+                        _passwordError = null;
+                      });
+                      authViewModel.onEvent(
+                        SubmitSignup(
+                          username: controllerName.text,
+                          email: controllerEmail.text,
+                          password: controllerPw.text,
+                          role: selectedRole,
+                        ),
+                      );
+                    },
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: const Color.fromARGB(255, 39, 81, 195),
+                disabledBackgroundColor: Colors.grey,
+              ),
+              child: const Center(
+                child: Text(
+                  "SignUp",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
