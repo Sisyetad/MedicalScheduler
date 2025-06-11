@@ -30,7 +30,10 @@ class _DiagnosisState extends ConsumerState<DiagnosisSummaryScreen> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.tertiary),
+        appBar: AppBar(
+          key: const Key('diagnosis_summary_appbar'),
+          backgroundColor: Theme.of(context).colorScheme.tertiary,
+        ),
         body: SingleChildScrollView(
           child: Center(
             child: Column(
@@ -40,23 +43,33 @@ class _DiagnosisState extends ConsumerState<DiagnosisSummaryScreen> {
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     "Diagnosis Details",
+                    key: Key('diagnosis_summary_title'),
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
                 if (state.isLoading)
-                  const CircularProgressIndicator()
+                  const CircularProgressIndicator(
+                    key: Key('diagnosis_summary_loading'),
+                  )
                 else if (state.error != null)
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
                       'Error: ${state.error}',
+                      key: Key('diagnosis_summary_error'),
                       style: const TextStyle(color: Colors.red),
                     ),
                   )
                 else if (state.diagnosis != null)
-                  GreenBook(diagnosis: state.diagnosis!)
+                  GreenBook(
+                    key: const Key('diagnosis_summary_greenbook'),
+                    diagnosis: state.diagnosis!,
+                  )
                 else
-                  const Text("No diagnosis found."),
+                  const Text(
+                    "No diagnosis found.",
+                    key: Key('diagnosis_summary_empty'),
+                  ),
                 const SizedBox(height: 20),
                 const BackToHome(roleId: 4),
               ],

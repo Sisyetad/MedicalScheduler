@@ -10,8 +10,6 @@ import 'package:medical_scheduler/presentation/widgets/receptionist_queue_widget
 import 'package:medical_scheduler/presentation/Provider/providers/Receptionist/receptionist_queue_provider.dart';
 import 'package:medical_scheduler/presentation/events/Receptionist/receptionist_queue_events.dart';
 
-// leave import for you
-
 class ReceptionistQueuePage extends ConsumerStatefulWidget {
   const ReceptionistQueuePage({super.key});
 
@@ -78,6 +76,7 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: ElevatedButton(
+                  key: const Key('queue_add_patient_button'),
                   onPressed: () {
                     context.go(
                       '/receptionist/add-patient/${currentUser?.userId}',
@@ -92,6 +91,7 @@ class _ReceptionistQueuePageState extends ConsumerState<ReceptionistQueuePage> {
               ),
               const SizedBox(height: 20),
               TextField(
+                key: const Key('queue_search_field'),
                 decoration: const InputDecoration(
                   hintText: "Search patient in queue...",
                 ),

@@ -60,6 +60,7 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Employee added successfully!')));
+        // ignore: invalid_use_of_protected_member
         notifier.state = notifier.state.copyWith(isSuccess: false);
 
         context.go('/admin_home');
@@ -68,105 +69,115 @@ class _AddEmployeePageState extends ConsumerState<AddEmployeePage> {
 
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.tertiary),
-      body: Container(
-        color: Colors.lightBlue[50],
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Add Employee',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              if (state.selectedRole == 'Doctor') ...[
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.lightBlue[50],
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Add Employee',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 20),
+                if (state.selectedRole == 'Doctor') ...[
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    key: const Key('add_employee_name_field'),
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      hintText: 'Name',
+                      border: UnderlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (state.selectedRole == 'Doctor' &&
+                          (value == null || value.trim().isEmpty)) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
                 TextFormField(
-                  controller: _nameController,
+                  key: const Key('add_employee_email_field'),
+                  controller: _emailController,
                   decoration: const InputDecoration(
-                    hintText: 'Name',
+                    hintText: 'Email',
                     border: UnderlineInputBorder(),
                   ),
+                  keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (state.selectedRole == 'Doctor' &&
-                        (value == null || value.trim().isEmpty)) {
-                      return 'Please enter a name';
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter an email';
+                    } else if (!value.contains('@')) {
+                      return 'Invalid email format';
                     }
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
+                const Text('Select Role', style: TextStyle(fontSize: 16)),
+                DropdownButtonFormField<String>(
+                  key: const Key('add_employee_role_dropdown'),
+                  value: state.selectedRole,
+                  decoration: const InputDecoration(
+                    hintText: 'Select Role',
+                    border: UnderlineInputBorder(),
+                  ),
+                  items: ['Doctor', 'Receptionist']
+                      .map(
+                        (role) =>
+                            DropdownMenuItem(value: role, child: Text(role)),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      notifier.onEvent(EmployeeRoleSelected(value));
+                      _nameController.clear(); // Reset name field
+                    }
+                  },
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  key: const Key('add_employee_submit_button'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: Colors.blue[700],
+                  ),
+                  onPressed: state.isLoading
+                      ? null
+                      : () {
+                          if (_formKey.currentState!.validate()) {
+                            notifier.onEvent(
+                              SubmitEmployeeForm(
+                                name: state.selectedRole == 'Doctor'
+                                    ? _nameController.text.trim()
+                                    : "",
+                                email: _emailController.text.trim(),
+                                branchId: widget.branchId,
+                              ),
+                            );
+                          }
+                        },
+                  child: state.isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Add Employee',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                ),
+                const SizedBox(height: 20),
+                // Optionally add a key for BackToHome
+                const BackToHome(
+                  roleId: 2,
+                  key: Key('add_employee_back_home_button'),
+                ),
               ],
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                  border: UnderlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter an email';
-                  } else if (!value.contains('@')) {
-                    return 'Invalid email format';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text('Select Role', style: TextStyle(fontSize: 16)),
-              DropdownButtonFormField<String>(
-                value: state.selectedRole,
-                decoration: const InputDecoration(
-                  hintText: 'Select Role',
-                  border: UnderlineInputBorder(),
-                ),
-                items: ['Doctor', 'Receptionist']
-                    .map(
-                      (role) =>
-                          DropdownMenuItem(value: role, child: Text(role)),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    notifier.onEvent(EmployeeRoleSelected(value));
-                    _nameController.clear(); // Reset name field
-                  }
-                },
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  backgroundColor: Colors.blue[700],
-                ),
-                onPressed: state.isLoading
-                    ? null
-                    : () {
-                        if (_formKey.currentState!.validate()) {
-                          notifier.onEvent(
-                            SubmitEmployeeForm(
-                              name: state.selectedRole == 'Doctor'
-                                  ? _nameController.text.trim()
-                                  : "",
-                              email: _emailController.text.trim(),
-                              branchId: widget.branchId,
-                            ),
-                          );
-                        }
-                      },
-                child: state.isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        'Add Employee',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-              ),
-              const SizedBox(height: 20),
-              const BackToHome(roleId: 2),
-            ],
+            ),
           ),
         ),
       ),

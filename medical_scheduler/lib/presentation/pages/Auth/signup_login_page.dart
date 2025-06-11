@@ -23,7 +23,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
               children: [
                 Container(
                   width: 330,
-                  height: 500,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(154, 240, 255, 255),
@@ -36,64 +35,78 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
                       ),
                     ],
                   ),
-                  child: Column(
-                    children: [
-                      // Toggle Login / Signup
-                      Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: Colors.black),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () => setState(() => isSignup = false),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: !isSignup ? const Color(0xFF2751C3) : Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: !isSignup ? Colors.white : Colors.black,
-                                      fontWeight: FontWeight.bold,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Toggle Login / Signup
+                        Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  key: const Key('login_toggle_button'),
+                                  onTap: () => setState(() => isSignup = false),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: !isSignup
+                                          ? const Color(0xFF2751C3)
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: !isSignup
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () => setState(() => isSignup = true),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: isSignup ? const Color(0xFF2751C3) : Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'SignUp',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: isSignup ? Colors.white : Colors.black,
-                                      fontWeight: FontWeight.bold,
+                              Expanded(
+                                child: GestureDetector(
+                                  key: const Key('signup_toggle_button'),
+                                  onTap: () => setState(() => isSignup = true),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isSignup
+                                          ? const Color(0xFF2751C3)
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'SignUp',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: isSignup
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      isSignup ? const SignupWidget() : const LoginWidget(),
-                    ],
+                        const SizedBox(height: 24),
+                        isSignup
+                            ? const SignupWidget(key: Key('signup_widget'))
+                            : const LoginWidget(key: Key('login_widget')),
+                      ],
+                    ),
                   ),
                 ),
               ],

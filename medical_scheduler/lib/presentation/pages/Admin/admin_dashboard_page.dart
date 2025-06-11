@@ -7,6 +7,8 @@ import 'package:medical_scheduler/presentation/widgets/popup_menu.dart';
 import 'package:medical_scheduler/presentation/widgets/side_bar.dart';
 import 'package:medical_scheduler/presentation/Provider/providers/Auth/auth_provider.dart';
 
+// ...imports...
+
 class AdminDashboardPage extends ConsumerStatefulWidget {
   const AdminDashboardPage({super.key});
 
@@ -18,11 +20,13 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-      () => ref
-          .read(adminDashboardNotifierProvider.notifier)
-          .onEvent(FetchDashboardData()),
-    );
+    Future.microtask(() {
+      ref.read(adminDashboardNotifierProvider.notifier).onEvent(FetchDashboardData());
+    });
+  }
+
+  void _filterEmployees(String query) {
+    ref.read(adminDashboardNotifierProvider.notifier).onEvent(SearchEmployees(query));
   }
 
   void _showDeleteConfirmation(int userId, String username) {
@@ -30,35 +34,24 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete user: $username?'),
-          actions: <Widget>[
+          title: const Text('Confirm Delete'),
+          content: Text('Are you sure you want to delete $username?'),
+          actions: [
             TextButton(
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
-              onPressed: () {
-                context.pop();
-              },
             ),
             TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.red),
-              child: const Text('Delete'),
               onPressed: () {
-                ref
-                    .read(adminDashboardNotifierProvider.notifier)
-                    .onEvent(DeleteEmployee(userId));
-                context.pop();
+                ref.read(adminDashboardNotifierProvider.notifier).onEvent(DeleteEmployee(userId));
+                Navigator.of(context).pop();
               },
+              child: const Text('Delete'),
             ),
           ],
         );
       },
     );
-  }
-
-  void _filterEmployees(String query) {
-    ref
-        .read(adminDashboardNotifierProvider.notifier)
-        .onEvent(SearchEmployees(query));
   }
 
   @override
@@ -100,6 +93,7 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
                               title: 'Total Doctors',
                               count: state.doctorCount,
                               icon: Icons.medical_services,
+                              key: const Key('dashboard_total_doctors_card'),
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -108,18 +102,23 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
                               title: 'Total Receptionists',
                               count: state.receptionistCount,
                               icon: Icons.support_agent,
+                              key: const Key(
+                                'dashboard_total_receptionists_card',
+                              ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
                       SearchBar(
+                        key: const Key('dashboard_employee_search_field'),
                         hintText: "Search for Employee ...",
                         onChanged: _filterEmployees,
                       ),
                       const SizedBox(height: 20),
 
                       ElevatedButton.icon(
+                        key: const Key('add_employee_button'),
                         icon: const Icon(Icons.add),
                         label: const Text('Add Employee'),
                         style: ElevatedButton.styleFrom(
@@ -186,6 +185,9 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
                                           SizedBox(
                                             height: 26,
                                             child: ElevatedButton(
+                                              key: Key(
+                                                'delete_user_button_${user.userId}',
+                                              ),
                                               onPressed: () =>
                                                   _showDeleteConfirmation(
                                                     user.userId,
@@ -242,8 +244,10 @@ class _AdminDashboardPageState extends ConsumerState<AdminDashboardPage> {
     required String title,
     required int count,
     required IconData icon,
+    Key? key,
   }) {
     return Container(
+      key: key,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF2B5F91),

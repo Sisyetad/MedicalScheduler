@@ -39,6 +39,7 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
       child: Scaffold(
         drawer: const SideBar(),
         appBar: AppBar(
+          key: const Key('doctor_appbar'),
           backgroundColor: Theme.of(context).colorScheme.tertiary,
           actions: const [PopupMenu()],
         ),
@@ -50,6 +51,7 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   "Doctor Queue",
+                  key: Key('doctor_queue_title'),
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -57,6 +59,7 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
 
               Consumer(
                 builder: (context, ref, child) => Completed(
+                  key: const Key('doctor_queue_completed_count'),
                   completedCount: ref
                       .watch(doctorQueueNotifierProvider)
                       .completed,
@@ -65,12 +68,14 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
               const SizedBox(height: 20),
               Consumer(
                 builder: (context, ref, child) => Pending(
+                  key: const Key('doctor_queue_pending_count'),
                   pendingCount: ref.watch(doctorQueueNotifierProvider).pending,
                 ),
               ),
               const SizedBox(height: 20),
               Consumer(
                 builder: (context, ref, child) => Resolved(
+                  key: const Key('doctor_queue_resolved_count'),
                   resolvedCount: ref
                       .watch(doctorQueueNotifierProvider)
                       .resolvedPending,
@@ -78,6 +83,7 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
               ),
               const SizedBox(height: 20),
               SearchBar(
+                key: const Key('doctor_queue_search_bar'),
                 hintText: "Search for Users...",
                 onChanged: _filterQueues,
               ),
@@ -88,7 +94,10 @@ class _DoctorPageState extends ConsumerState<DoctorPage> {
                 builder: (context, ref, _) {
                   final state = ref.watch(doctorQueueNotifierProvider);
 
-                  return DoctorQueueWidget(queues: state.queues);
+                  return DoctorQueueWidget(
+                    key: const Key('doctor_queue_list_widget'),
+                    queues: state.queues,
+                  );
                 },
               ),
             ],

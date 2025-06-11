@@ -70,7 +70,6 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(receptionistAddPatientNotifierProvider);
 
-    // Handle navigation and form reset after success
     if (state.isSuccess && !_hasNavigated) {
       _hasNavigated = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -81,112 +80,121 @@ class _AddPatientPageState extends ConsumerState<AddPatientPage> {
 
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.tertiary),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Full Name'),
-              TextFormField(
-                controller: fullNameController,
-                decoration: const InputDecoration(hintText: 'Full Name'),
-                validator: (val) =>
-                    val == null || val.isEmpty ? 'Required' : null,
-              ),
-              const SizedBox(height: 16),
-              const Text('Date of Birth'),
-              TextFormField(
-                controller: dateOfBirthController,
-                decoration: const InputDecoration(hintText: 'Date of Birth'),
-                readOnly: true,
-                onTap: () async {
-                  final pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now(),
-                  );
-                  if (pickedDate != null) {
-                    dateOfBirthController.text = pickedDate
-                        .toIso8601String()
-                        .split('T')[0];
-                  }
-                },
-                validator: (val) =>
-                    val == null || val.isEmpty ? 'Required' : null,
-              ),
-              const SizedBox(height: 16),
-              const Text('Email'),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(hintText: 'Email'),
-                validator: (val) {
-                  if (val == null || val.isEmpty) return 'Required';
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(val)) {
-                    return 'Enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              const Text('Address'),
-              TextFormField(
-                controller: addressController,
-                decoration: const InputDecoration(hintText: 'Address'),
-                validator: (val) =>
-                    val == null || val.isEmpty ? 'Required' : null,
-              ),
-              const SizedBox(height: 16),
-              const Text('Phone Number'),
-              TextFormField(
-                controller: phoneNumberController,
-                decoration: const InputDecoration(hintText: 'Phone Number'),
-                validator: (val) {
-                  if (val == null || val.isEmpty) return 'Required';
-                  if (!RegExp(r'^\+?[1-9]\d{1,14}$').hasMatch(val)) {
-                    return 'Enter a valid phone number';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              const Text('Gender'),
-              DropdownButtonFormField<String>(
-                value: selectedGender,
-                decoration: const InputDecoration(hintText: 'Select Gender'),
-                items: ['Male', 'Female', 'Other']
-                    .map(
-                      (gender) =>
-                          DropdownMenuItem(value: gender, child: Text(gender)),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedGender = value;
-                  });
-                },
-                validator: (val) =>
-                    val == null || val.isEmpty ? 'Required' : null,
-              ),
-              const SizedBox(height: 24),
-              if (state.isLoading)
-                const Center(child: CircularProgressIndicator()),
-              if (state.error != null)
-                Text(state.error!, style: const TextStyle(color: Colors.red)),
-              Center(
-                child: ElevatedButton(
-                  onPressed: state.isLoading ? null : _submit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 39, 81, 195),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('Add patient'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Full Name'),
+                TextFormField(
+                  key: const Key('add_patient_full_name_field'),
+                  controller: fullNameController,
+                  decoration: const InputDecoration(hintText: 'Full Name'),
+                  validator: (val) =>
+                      val == null || val.isEmpty ? 'Required' : null,
                 ),
-              ),
-              Center(child: const BackToHome(roleId: 5)),
-            ],
+                const SizedBox(height: 16),
+                const Text('Date of Birth'),
+                TextFormField(
+                  key: const Key('add_patient_dob_field'),
+                  controller: dateOfBirthController,
+                  decoration: const InputDecoration(hintText: 'Date of Birth'),
+                  readOnly: true,
+                  onTap: () async {
+                    final pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (pickedDate != null) {
+                      dateOfBirthController.text = pickedDate
+                          .toIso8601String()
+                          .split('T')[0];
+                    }
+                  },
+                  validator: (val) =>
+                      val == null || val.isEmpty ? 'Required' : null,
+                ),
+                const SizedBox(height: 16),
+                const Text('Email'),
+                TextFormField(
+                  key: const Key('add_patient_email_field'),
+                  controller: emailController,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                  validator: (val) {
+                    if (val == null || val.isEmpty) return 'Required';
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(val)) {
+                      return 'Enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Text('Address'),
+                TextFormField(
+                  key: const Key('add_patient_address_field'),
+                  controller: addressController,
+                  decoration: const InputDecoration(hintText: 'Address'),
+                  validator: (val) =>
+                      val == null || val.isEmpty ? 'Required' : null,
+                ),
+                const SizedBox(height: 16),
+                const Text('Phone Number'),
+                TextFormField(
+                  key: const Key('add_patient_phone_field'),
+                  controller: phoneNumberController,
+                  decoration: const InputDecoration(hintText: 'Phone Number'),
+                  validator: (val) {
+                    if (val == null || val.isEmpty) return 'Required';
+                    if (!RegExp(r'^\+?[1-9]\d{1,14}$').hasMatch(val)) {
+                      return 'Enter a valid phone number';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Text('Gender'),
+                DropdownButtonFormField<String>(
+                  key: const Key('add_patient_gender_dropdown'),
+                  value: selectedGender,
+                  decoration: const InputDecoration(hintText: 'Select Gender'),
+                  items: ['Male', 'Female', 'Other']
+                      .map(
+                        (gender) =>
+                            DropdownMenuItem(value: gender, child: Text(gender)),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedGender = value;
+                    });
+                  },
+                  validator: (val) =>
+                      val == null || val.isEmpty ? 'Required' : null,
+                ),
+                const SizedBox(height: 24),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator()),
+                if (state.error != null)
+                  Text(state.error!, style: const TextStyle(color: Colors.red)),
+                Center(
+                  child: ElevatedButton(
+                    key: const Key('add_patient_submit_button'),
+                    onPressed: state.isLoading ? null : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 39, 81, 195),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('Add patient'),
+                  ),
+                ),
+                Center(child: const BackToHome(roleId: 5)),
+              ],
+            ),
           ),
         ),
       ),

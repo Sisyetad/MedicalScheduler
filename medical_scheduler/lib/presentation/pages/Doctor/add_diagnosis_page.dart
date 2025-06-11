@@ -57,6 +57,7 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                   child: Text("Diagnosis Name", style: TextStyle(fontSize: 20)),
                 ),
                 TextField(
+                  key: const Key('diagnosis_name_field'),
                   controller: _diagnosisController,
                   decoration: InputDecoration(
                     labelText: 'Diagnosis Name',
@@ -72,6 +73,7 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                   child: Text("Medication", style: TextStyle(fontSize: 20)),
                 ),
                 TextField(
+                  key: const Key('diagnosis_medication_field'),
                   controller: _medicationController,
                   decoration: InputDecoration(labelText: "Medication"),
                 ),
@@ -81,6 +83,7 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                   child: Text("Comments", style: TextStyle(fontSize: 20)),
                 ),
                 TextField(
+                  key: const Key('diagnosis_comments_field'),
                   controller: _commentsController,
                   decoration: InputDecoration(labelText: 'Comments'),
                 ),
@@ -88,6 +91,7 @@ class _AddDiagnosisState extends ConsumerState<AddDiagnosisScreen> {
                 state.isLoading
                     ? CircularProgressIndicator()
                     : ElevatedButton(
+                        key: const Key('diagnosis_submit_button'),
                         onPressed: () async {
                           final diagnosisText = _diagnosisController.text
                               .trim();
