@@ -503,25 +503,6 @@ class MockAuthViewModel extends _i1.Mock implements _i17.AuthViewModel {
   );
 
   @override
-  _i16.Future<void> registerUser({
-    required String? username,
-    required String? email,
-    required String? password,
-    required String? role,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#registerUser, [], {
-              #username: username,
-              #email: email,
-              #password: password,
-              #role: role,
-            }),
-            returnValue: _i16.Future<void>.value(),
-            returnValueForMissingStub: _i16.Future<void>.value(),
-          )
-          as _i16.Future<void>);
-
-  @override
   _i16.Future<void> checkLoginStatus() =>
       (super.noSuchMethod(
             Invocation.method(#checkLoginStatus, []),
