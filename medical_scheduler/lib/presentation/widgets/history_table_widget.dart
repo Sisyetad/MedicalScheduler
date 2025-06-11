@@ -1,4 +1,7 @@
+// lib/presentation/widgets/history_table_widget.dart
+
 import 'package:flutter/material.dart';
+// Make sure this import path is correct for your project structure
 import 'package:medical_scheduler/domain/entities/response/diagnosis_history.dart';
 
 class HistoryTableWidget extends StatelessWidget {
@@ -18,18 +21,19 @@ class HistoryTableWidget extends StatelessWidget {
         (states) => const Color.fromARGB(255, 43, 95, 145),
       ),
       headingRowHeight: 40,
-      dataRowHeight: 120,
+      // FIX: Replaced deprecated dataRowHeight with modern properties
+      dataRowMinHeight: 120,
+      dataRowMaxHeight: 120,
       columns: const [
-        DataColumn(label: Text('Name', style: TextStyle(color: Colors.white))),
+        // Style is now correctly inherited from DataTableThemeData
+        DataColumn(label: Text('Name')),
         DataColumn(
           label: SizedBox(
             width: 70,
-            child: Text('Date', style: TextStyle(color: Colors.white)),
+            child: Text('Date'),
           ),
         ),
-        DataColumn(
-          label: Text('Actions', style: TextStyle(color: Colors.white)),
-        ),
+        DataColumn(label: Text('Actions')),
       ],
       rows:
           diagnosisList.map((diagnosis) {

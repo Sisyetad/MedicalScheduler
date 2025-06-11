@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Resolved extends StatelessWidget {
-  final int resolvedCount; // This should be replaced with the actual resolved count from the provide
+  final int resolvedCount;
   const Resolved({super.key, required this.resolvedCount});
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 100,
       width: 308,
@@ -16,18 +15,31 @@ class Resolved extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text("Resolved Pending", style: TextStyle(fontSize: 30)),
+          // THIS IS THE FINAL FIX: Using Expanded
+          // An Expanded widget forces its child to fill the available space
+          // in the main axis. Here, each Expanded will take up exactly 50px of height.
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  "Resolved Pending",
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Text("$resolvedCount", style: const TextStyle(fontSize: 30)),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  "$resolvedCount",
+                  style: const TextStyle(fontSize: 24),
+                ),
+              ),
             ),
           ),
         ],

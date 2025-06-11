@@ -7,11 +7,19 @@ class PopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: PopupMenuButton<String>(
+        // This is the correct way to handle item taps
+        onSelected: (String value) {
+          if (value == 'view') {
+            context.go('/profile');
+          } else if (value == 'edit') {
+            context.go('/profile/edit'); // Example route for editing
+          }
+        },
         itemBuilder: (BuildContext context) {
           return [
-            PopupMenuItem<String>(
+            const PopupMenuItem<String>(
               value: 'view',
               child: Row(
                 children: [
@@ -21,7 +29,7 @@ class PopupMenu extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuItem<String>(
+            const PopupMenuItem<String>(
               value: 'edit',
               child: Row(
                 children: [
@@ -33,14 +41,10 @@ class PopupMenu extends StatelessWidget {
             ),
           ];
         },
-        child: InkWell(
-          splashColor: Colors.white,
-          onTap: () {
-            context.go('/profile');
-          },
-          child: CircleAvatar(
-            child: Image.asset('assets/images/profile.png'), // Profile image
-          ),
+        // The child is now just the CircleAvatar.
+        // The PopupMenuButton makes it tappable automatically.
+        child: CircleAvatar(
+          child: Image.asset('assets/images/profile.png'), // Profile image
         ),
       ),
     );
